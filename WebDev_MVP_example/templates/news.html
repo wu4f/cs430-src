@@ -1,0 +1,41 @@
+{%extends 'layout.html' %}
+
+{%block body %}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-3">
+      {% include 'includes/_sidebar.html' %}
+    </div>
+    <div class="col-lg-9">
+      <h1 class="page-header">News</h1>
+      {%for article in articles %}
+        <!-- <li class="list-group-item"> -->
+          <div class="jumbotron">
+            <table class="table">
+              <tr border>
+                <a href="{{article.url}}" target="_blank"><h3>{{article.title}} </h3></a>
+                  <td>
+
+                    <kbd>{{article.publishedAt}}</kbd>
+                  </td>
+                  <td>
+                  <a class="btn btn-success" href="/add_article"> Comment </a>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <img src="{{article.urlToImage}}" alt="{{article.title}}" style="width:204px;height:158px;">
+                </td>
+                <td>
+                  <p> {{article.description}}
+                </td>
+              </tr>
+            </table>
+
+          </div>
+        <!-- </li> -->
+      {%endfor%}
+    </div>
+  </div>
+</div>
+{% endblock %}

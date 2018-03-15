@@ -1,0 +1,11 @@
+{%extends 'layout.html'%}
+
+{%block body %}
+  <h1> {{article.title}}</h1>
+  <small>Author: {{article.author}}
+  <hr>
+  <div class="">
+    <p>{{article.body |safe}}</p> <!-- |safe is to prevent html tag showing -->
+  </div>
+
+{%endblock%}

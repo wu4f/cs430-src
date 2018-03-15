@@ -1,0 +1,8 @@
+.git/
+__pycache__/
+tests/example_test.py
+tests/model_test.py
+tests/presenter_test.py
+tests/__pycache__/
+openweather.py
+templates/weather.html

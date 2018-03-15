@@ -1,0 +1,23 @@
+{%extends 'layout.html' %}
+
+{%block body %}
+<div class="row">
+  <div class="col-lg-3">
+    {% include 'includes/_sidebar.html' %}
+  </div>
+  <div class="col-lg-9">
+    <h1>Articles</h1>
+
+    {%for article in articles %}
+      <!-- <li class="list-group-item"> -->
+        <div class="jumbotron">
+          <a href="article/{{article.id}}"> <h4>{{article.title}}</h4> </a>
+          <br>
+          <p><small> Written by: {{article.author}} </small></p>
+        </div>
+      <!-- </li> -->
+    {%endfor%}
+  </div>
+</div>  
+
+{% endblock %}

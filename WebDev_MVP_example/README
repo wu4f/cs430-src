@@ -1,0 +1,61 @@
+DESIGN CHOICE
+
+The web application code is structure with a model, view, presenter (MVP). The model
+is responsible for database query requests. The view is basically the html pages are
+being seem by users. The presenter deal with the business logic and user interface
+(UI) event handlers.
+
+SETTING UP MYSQL DATABASE
+
+$ sudo apt-get install mysql-server libmysqlclient-dev
+$ pip install flask-mysqldb
+$ pip install Flask-WTF  // help with form validation
+$ pip install passlib //help with hashing password
+
+$ mysql -u root -p //add sudo if receive an ERROR regarding permission
+
+mysql> CREATE DATABASE testing_flask_app;
+mysql> USE testing_flask_app;
+mysql> CREATE TABLE users(id INT(11) AUTO_INCREMENT PRIMARY KEY, name VARCHAR(100), email VARCHAR(100), username VARCHAR(30), password VARCHAR(100), register_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
+
+mysql> SHOW TABLES;
++-----------------------------+
+| Tables_in_testing_flask_app |
++-----------------------------+
+| users                       |
++-----------------------------+
+1 row in set (0.00 sec)
+
+mysql> DESCRIBE users;
++---------------+--------------+------+-----+-------------------+----------------+
+| Field         | Type         | Null | Key | Default           | Extra          |
++---------------+--------------+------+-----+-------------------+----------------+
+| id            | int(11)      | NO   | PRI | NULL              | auto_increment |
+| name          | varchar(100) | YES  |     | NULL              |                |
+| email         | varchar(100) | YES  |     | NULL              |                |
+| username      | varchar(30)  | YES  |     | NULL              |                |
+| password      | varchar(100) | YES  |     | NULL              |                |
+| register_date | timestamp    | NO   |     | CURRENT_TIMESTAMP |                |
++---------------+--------------+------+-----+-------------------+----------------+
+6 rows in set (0.00 sec)
+
+mysql> SELECT * FROM users;
++----+------+---------------+----------+-------------------------------------------------------------------------------+---------------------+
+| id | name | email         | username | password                                                                      | register_date       |
++----+------+---------------+----------+-------------------------------------------------------------------------------+---------------------+
+|  1 | asdf | asdf@test.com | asdf     | $5$rounds=535000$axRodkL7qLGKi/ry$CTAkIFuU5mF/Iarg35xXhzmItxBLucaMESPswPjnr02 | 2017-07-19 13:08:30 |
++----+------+---------------+----------+-------------------------------------------------------------------------------+---------------------+
+1 rows in set (0.00 sec)
+
+mysql> CREATE TABLE articles(id int(11) AUTO_INCREMENT PRIMARY KEY, title VARCHAR(255), link VARCHAR(255), body TEXT, create_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
+
+
+DEBUG - If you having problem accessing the database, because of permission.
+
+mysql> grant all privileges on *.* to root@localhost identified by '' with grant option;
+mysql> USE mysql;
+mysql> UPDATE user SET plugin='mysql_native_password' WHERE User='root';
+mysql> FLUSH PRIVILEGES;
+mysql> exit;
+t@t:~$ service mysql restart
+t@t:~$ mysql -u root

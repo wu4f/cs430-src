@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h2>Guestbook</h2>
+    <form action="{{ url_for('sign') }}" method=post>
+	<span class="heading">Name: <input type=text name=name></span>
+	<p class="heading">Email: <input type=text name=email></span>
+        <p class="heading">Message:</p>
+        <textarea rows=5 cols=50 name=message></textarea>
+        <p><input type=submit value=Sign>
+    </form>
+
+    <h2>Entries</h2>
+    {% for entry in entries %}
+        <p class=entry>
+            {{ entry.name }} &lt;{{ entry.email }}&gt;
+	    <br>signed on {{ entry.signed_on }}<br>
+	    {{ entry.message }}
+        </p>
+    {% else %}
+        <p class=entry></p>
+    {% endfor %}
+
+{% endblock %}
