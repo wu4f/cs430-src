@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block body %}
+	{% if 'username' in session %}
+		<p>Logged in as: {{session['username']}}</p>
+		<p>Please select one of the chapters on the navigation bar to begin your assignment.</p>
+	{% else %}
+	This site hosts the Intelligent Tutoring System for CS201 Course offered by the Computer Science Department at Portland State University.<p>
+	Course material can be found <a href="http://thefengs.com/wuchang/courses/cs201/">here</a>
+	<p>Please <a href="{{url_for('login')}}">login</a></p>
+	{% endif %}
+{% endblock %}

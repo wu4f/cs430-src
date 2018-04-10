@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block body %}
+<h2>Scoreboard</h2>
+<hr>
+<table class="score">
+<tr><th>USER</th><th>STATUS</th></tr>
+	{% for u in users %}
+        <tr>
+	        <td>{{u}}</td>
+                <td>{{scores[u]}}</td>
+        <tr>
+	{% endfor %}
+</table>
+<br/>
+<h2>Detailed Score View</h2>
+<hr>
+{% for u in users %}
+<h5>{{u}}</h5>
+	{% for chap in chapters %}
+		<table class="score">
+			<tr>
+				<caption>Chapter {{chap}}</caption>
+				{% for quest,c in questions.items() %}
+                                	{% if u in quest %}
+          					{% if quest[-1] == chap %}
+            						{% for q in solved %}
+              							{% if quest == q %} 
+	        							<td bgcolor="#33cc33">{{c}}</td>
+              							{% endif %}
+            						{% endfor %}
+            						{% if quest not in solved %}
+              							<td bgcolor="ff0000">{{c}}</td>
+            						{% endif %}
+          					{% endif %}
+                                	{% endif %}
+				{% endfor %}
+			</tr>
+		</table>
+	{% endfor %}
+<hr>
+{% endfor %}
+{% endblock %}

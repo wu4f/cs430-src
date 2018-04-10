@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block body %}
+	{% with messages = get_flashed_messages() %}
+        <pre id="flashed">                
+			{% for message in messages %}
+				{{message}}
+                        {% endfor %}
+	</pre>
+        {% endwith %}
+	<div class="chapters">
+	<h2>Solve the following problems :</h2>
+	{% for key, values in questions.items() %}
+     		<form action="{{url_for('chapter2')}}" method="post">
+		<table class="table-bordered table-striped table-condensed cf" name="{{key}}"> 
+		<tbody>
+          		<tr><td data-title="Problem">{{values|safe}}</td></tr>
+		</tbody>
+		</table>
+                {% if key in solved %}
+                <p><span class="highlight">SOLVED</span></p>
+		<p>Answer : {{answers[key]}}</p>
+                {% else %}
+		<input type="text" placeholder="answer" name="{{key}}" maxlength="32" />
+		<input type="submit" value="Submit" />
+                {% endif %}
+     		</form>
+  	{% endfor %}
+                <form action="{{url_for('chapter2')}}" method="post">
+                  <input type="submit" id="reset" name="reset" value="RESET" style="margin-left:50%"/>
+                </form>
+	</div>
+{% endblock %}

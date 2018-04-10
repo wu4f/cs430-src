@@ -1,0 +1,21 @@
+server {
+    listen 80;
+    server_tokens off;
+    server_name itscs201.oregonctf.org;
+    root /var/www/html/itscs201/www;
+
+    location / {
+         include uwsgi_params;
+         uwsgi_pass unix:///tmp/itscs201.sock;
+     }
+
+     location /static {
+         alias /var/www/html/itscs201/www/static;
+     }
+
+     ## Only requests to our Host are allowed
+     if ($host !~ ^(oregonctf.org|itscs201.oregonctf.org)$ ) {
+        return 444;
+     }
+
+}
