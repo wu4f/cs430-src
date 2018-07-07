@@ -7,7 +7,6 @@ from model_pydict import model
 
 app = Flask(__name__)       # our Flask app
 model = model(app)
-DB_FILE = 'entries.db'    # file for our Database
 
 """
 Function decorator === app.route('/',index())
