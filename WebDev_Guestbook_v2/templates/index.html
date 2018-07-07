@@ -2,10 +2,10 @@
 {% block content %}
     <h2>Guestbook</h2>
     <form action="{{ url_for('sign') }}" method=post>
-	<span class="heading">Name: <input type=text name=name></span>
-	<p class="heading">Email: <input type=text name=email></span>
+	<p class="heading">Name: <input type=text name=name>
+	<p class="heading">Email: <input type=text name=email>
         <p class="heading">Message:</p>
-        <textarea rows=5 cols=50 name=message></textarea>
+		<textarea rows=5 cols=50 name=message></textarea>
         <p><input type=submit value=Sign>
     </form>
 
