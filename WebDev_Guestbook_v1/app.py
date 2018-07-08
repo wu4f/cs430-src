@@ -3,10 +3,10 @@ A simple guestbook flask app.
 """
 from flask import Flask, redirect, request, url_for, render_template
 #from model_sqlite3 import model
-from model_pydict import model
+from model_pylist import model
 
 app = Flask(__name__)       # our Flask app
-model = model(app)
+model = model()
 
 """
 Function decorator === app.route('/',index())
@@ -14,7 +14,7 @@ Function decorator === app.route('/',index())
 @app.route('/')
 @app.route('/index.html')
 def index():
-    """ 
+    """
     List guestbook
     """
     entries = [dict(name=row[0], email=row[1], signed_on=row[2], message=row[3] ) for row in model.select()]
