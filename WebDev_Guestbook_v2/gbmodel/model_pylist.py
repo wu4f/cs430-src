@@ -10,19 +10,20 @@ class model(Model):
 
     def select(self):
         """
-        Gets all entries from the database
-        :return: Tuple containing all rows of database
+        Returns guestentries list of lists
+        Each list in guestentries contains: name, email, date, message
+        :return: List of lists
         """
         return self.guestentries
 
     def insert(self, name, email, message):
         """
-        Inserts entry into database
+        Appends a new list of values representing new message into guestentries
         :param name: String
         :param email: String
         :param message: String
-        :return: none
-        :raises: Database errors on connection and insertion
+        :return: True
         """
         params = [name, email, date.today(), message]
         self.guestentries.append(params)
+        return True
