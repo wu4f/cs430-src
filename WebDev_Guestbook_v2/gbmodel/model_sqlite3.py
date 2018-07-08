@@ -46,7 +46,7 @@ class model(Model):
         :param name: String
         :param email: String
         :param message: String
-        :return: none
+        :return: True
         :raises: Database errors on connection and insertion
         """
         params = {'name':name, 'email':email, 'date':date.today(), 'message':message}
@@ -56,3 +56,4 @@ class model(Model):
 
         connection.commit()
         cursor.close()
+        return True

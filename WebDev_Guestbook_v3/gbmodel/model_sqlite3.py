@@ -31,7 +31,9 @@ class model(Model):
 
     def select(self):
         """
-        Gets all entries from the database
+        Gets all rows from the database
+        Each row contains: name, email, date, message
+        :return: List of lists containing all rows of database
         """
         connection = sqlite3.connect(DB_FILE)
         cursor = connection.cursor()
@@ -41,6 +43,11 @@ class model(Model):
     def insert(self, name, email, message):
         """
         Inserts entry into database
+        :param name: String
+        :param email: String
+        :param message: String
+        :return: True
+        :raises: Database errors on connection and insertion
         """
         params = {'name':name, 'email':email, 'date':date.today(), 'message':message}
         connection = sqlite3.connect(DB_FILE)
@@ -49,3 +56,4 @@ class model(Model):
 
         connection.commit()
         cursor.close()
+        return True
