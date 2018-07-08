@@ -3,7 +3,6 @@ A simple guestbook flask app.
 """
 import flask
 from flask.views import MethodView
-import gbmodel
 from index import Index
 from sign import Sign
 
