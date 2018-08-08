@@ -14,7 +14,6 @@
 
 from .Model import Model
 from datetime import datetime
-from flask import current_app
 from google.cloud import datastore
 
 def from_datastore(entity):
@@ -25,7 +24,9 @@ def from_datastore(entity):
         [Entity{key: (kind, id), prop: val, ...}]
 
     This returns:
-        {id: id, prop: val, ...}
+        [ name, email, date, message ]
+    where name, email, and message are Python strings
+    and where date is a Python datetime
     """
     if not entity:
         return None
@@ -35,7 +36,6 @@ def from_datastore(entity):
 
 class model(Model):
     def __init__(self):
-        #self.client = datastore.Client(current_app.config['PROJECT_ID'])
         self.client = datastore.Client('cs410c-wuchang-201515')
 
     def select(self):
