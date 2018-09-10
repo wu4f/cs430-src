@@ -2,8 +2,8 @@
 A simple guestbook flask app.
 """
 from flask import Flask, redirect, request, url_for, render_template
-#from model_sqlite3 import model
-from model_pylist import model
+from model_sqlite3 import model
+#from model_pylist import model
 
 app = Flask(__name__)       # our Flask app
 model = model()
@@ -26,7 +26,7 @@ def sign():
     Accepts POST requests, and processes the form;
     Redirect to index when completed.
     """
-    model.insert(request.form['name'], request.form['email'], request.form['message']) 
+    model.insert(request.form['name'], request.form['email'], request.form['message'])
     return redirect(url_for('index'))
 
 if __name__ == '__main__':
