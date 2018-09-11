@@ -1,5 +1,5 @@
-#model_backend = 'pylist'
-model_backend = 'sqlite3'
+model_backend = 'pylist'
+#model_backend = 'sqlite3'
 
 if model_backend == 'sqlite3':
     from .model_sqlite3 import model
