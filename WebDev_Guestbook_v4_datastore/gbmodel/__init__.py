@@ -11,7 +11,5 @@ elif model_backend == 'datastore':
 else:
     raise ValueError("No appropriate databackend configured. ")
 
-appmodel = model()
-
 def get_model():
     return appmodel
