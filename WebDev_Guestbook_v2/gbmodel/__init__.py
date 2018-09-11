@@ -1,6 +1,5 @@
-#model_backend = 'pylist'
+model_backend = 'pylist'
 #model_backend = 'sqlite3'
-model_backend = 'sqlite3'
 
 def get_model():
     if model_backend == 'sqlite3':
