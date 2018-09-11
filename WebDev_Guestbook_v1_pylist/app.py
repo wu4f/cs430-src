@@ -2,6 +2,8 @@
 A simple guestbook flask app.
 """
 from flask import Flask, redirect, request, url_for, render_template
+
+#from model_sqlite3 import model
 from model_pylist import model
 
 app = Flask(__name__)       # our Flask app
