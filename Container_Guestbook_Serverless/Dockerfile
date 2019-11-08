@@ -1,6 +1,5 @@
 # Use the Python version of alpine as the base image
-FROM alpine
-#ubuntu:18.04
+FROM google/cloud-sdk
 
 # Specify your e-mail address as the maintainer of the container image
 MAINTAINER Your Name "yourname@pdx.edu"
@@ -10,9 +9,6 @@ COPY . /app
 
 # Set the working directory of the container to /app
 WORKDIR /app
-
-# Install the Python packages specified by requirements.txt into the container
-RUN apk --update add --no-cache build-base python-dev py-pip
 
 # Install the Python packages specified by requirements.txt into the container
 RUN pip install -r requirements.txt
