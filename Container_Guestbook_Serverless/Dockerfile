@@ -1,5 +1,5 @@
-# Use the Python version of alpine as the base image
-FROM google/cloud-sdk
+# Use the Google Cloud SDK's slim container as the base image
+FROM google/cloud-sdk:slim
 
 # Specify your e-mail address as the maintainer of the container image
 MAINTAINER Your Name "yourname@pdx.edu"
