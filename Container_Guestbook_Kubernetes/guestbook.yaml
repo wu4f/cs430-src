@@ -12,7 +12,7 @@ spec:
     spec:
       containers:
       - name: guestbook-app
-        image: gcr.io/YOUR_PROJECT_ID/k8s_gb
+        image: gcr.io/cs410c-wuchang-201515/k8s_gb
         env:
         - name: PROCESSES
           value: guestbook
