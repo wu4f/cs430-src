@@ -3,25 +3,32 @@ import gbmodel
 import json
 
 def gb(request):
-    """HTTP Cloud Function.
-    Args:
-        request (flask.Request): The request object.
-    Returns:
-        response (flask.Response): The response object (in JSON)
+    """ Guestbook API endpoint
+        :param request: flask.Request object
+        :return: flack.Response object (in JSON), HTTP status code
     """
+    model = gbmodel.get_model()
     if request.method == 'GET':
-        model = gbmodel.get_model()
-        entries = [dict(name=row[0], email=row[1], signed_on=str(row[2]), message=row[3] ) for row in model.select()]
-        json_resp = { i:x for i,x in enumerate(entries,1)}
-        response = make_response(json.dumps(json_resp))
+        entries = [dict(name=row[0], email=row[1], signed_on=str(row[2]), message=row[3] )
+                       for row in model.select()]
+
+        entries_dict = { i:x for i,x in enumerate(entries,1)}
+
+        response = make_response(json.dumps(entries_dict))
         response.headers['Content-Type'] = 'application/json'
-        return response
+        return response, 200
+
     if request.method == 'POST' and request.headers['content-type'] == 'application/json':
         request_json = request.get_json(silent=True)
+
         if all(key in request_json for key in ('name', 'email', 'message')):
-            name = request_json['name']
+            model = gbmodel.get_model()
+            model.insert(request_json['name'], request_json['email'], request_json['message'])
         else:
-            raise ValueError("JSON is invalid, or missing a property")
-        return 'Hello {}!'.format(name)
-    else:
-        return abort(403)
+            raise ValueError("JSON missing name, email, or message property")
+
+        response = make_response(request_json)
+        response.headers['Content-Type'] = 'application/json'
+        return request_json, 201
+
+    return abort(403)
