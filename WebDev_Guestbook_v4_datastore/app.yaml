@@ -1,5 +1,12 @@
-runtime: python
-env: flex
+runtime: python37
+env: standard
+
+# Can run via flex environment, but it is a bit more expensive
+# and is not covered by the free tier
+#
+#runtime: python
+#env: flex
+
 entrypoint: gunicorn -b :$PORT app:app
 
 runtime_config:
