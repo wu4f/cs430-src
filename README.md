@@ -1,10 +1,8 @@
-CS 430P/530: Internet, Web & Cloud Systems Code
+# CS 430P/530: Internet, Web & Cloud Systems Code
 
-This repository has the code examples used to show a Guestbook web application can be
-built and deployed in multiple ways on the Internet and on Cloud platforms.  The code
-is used in a sequence as part of this course:
-http://thefengs.com/wuchang/courses/cs430
+This repository has the code examples used to show a Guestbook web application can be built and deployed in multiple ways on the Internet and on Cloud platforms.  The code is used in a sequence as part of this course: [CS 430P/530](http://thefengs.com/wuchang/courses/cs430)
 
+```
 .
 ├── 01_mvc_pylist
 |     Original Python/Flask Guestbook application using Python list model
@@ -24,3 +22,4 @@ http://thefengs.com/wuchang/courses/cs430
 |     Kubernetes version of Guestbook using Container Registry and Cloud Datastore
 └── 08_restapi_cloudfunctions
       REST API version of Guestbook using Cloud Functions, Cloud Datastore
+```
