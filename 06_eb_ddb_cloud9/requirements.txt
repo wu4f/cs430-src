@@ -1,8 +1,0 @@
-# Web framework
-flask==1.0.2
-
-# AWS libraries
-boto3
-
-# AWS EB CLI
-awsebcli
