@@ -4,7 +4,7 @@ import boto3
 
 class model(Model):
     def __init__(self):
-        self.resource = boto3.resource("dynamodb", region_name="us-west-2")
+        self.resource = boto3.resource("dynamodb")
         self.table = self.resource.Table('guestbook')
         try:
             self.table.load()
@@ -24,11 +24,11 @@ class model(Model):
                 AttributeDefinitions=[
                     {
                         "AttributeName": "email",
-                        "AttributeType": "S"              
+                        "AttributeType": "S"
                     },
                     {
                         "AttributeName": "date",
-                        "AttributeType": "S"              
+                        "AttributeType": "S"
                     }
                 ],
                 ProvisionedThroughput={
@@ -42,7 +42,7 @@ class model(Model):
             gbentries = self.table.scan()
         except Exception as e:
             return([['scan failed', '.', '.', '.']])
-        
+
         return([ [f['name'], f['email'], f['date'], f['message']] for f in gbentries['Items']])
 
     def insert(self,name,email,message):
@@ -52,10 +52,10 @@ class model(Model):
             'date' : str(datetime.today()),
             'message' : message
             }
-            
+
         try:
             self.table.put_item(Item=gbitem)
         except:
             return False
-        
+
         return True
