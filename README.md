@@ -16,8 +16,8 @@ This repository has the code examples used to show a Guestbook web application c
 ├── 05_computeengine_appengine_datastore
 |     Serverless version of Guestbook using AppEngine and Cloud Datastore
 |     Used to also run Compute Engine and Cloud Datastore version as well
-├── 05_ec2_ddb
-|     EC2 with DynamoDB model done via Cloud9 IDE
+├── 05_ec2_ddb_cloud9_docker_ecs
+|     EC2/Cloud9, EB, and ECS versions with DynamoDB model
 ├── 06_cloudrun
 |     Container version of Guestbook for Cloud Run using a Cloud Datastore model
 ├── 07_gcr_kubernetesengine
