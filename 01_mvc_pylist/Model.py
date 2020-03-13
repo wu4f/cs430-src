@@ -1,8 +1,9 @@
 class Model():
     def select(self):
         """
-        Gets all entries from the database
-        :return: Tuple containing all rows of database
+        Gets all rows from the database as a list of lists.
+        Row consists of name, email, date, and message.
+        :return: List of lists containing all rows of database
         """
         pass
 
