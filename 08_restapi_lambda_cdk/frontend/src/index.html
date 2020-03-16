@@ -1,0 +1,33 @@
+<!doctype html>
+
+<html>
+  <head>
+    <title>My Visitors</title>
+    <link rel=stylesheet type="text/css" href="./static/style.css">
+    <script src="./static/guestbook.js"></script>
+  </head>
+  <body>
+    <div class=page>
+      <h2>Guestbook</h2>
+      <div>
+          <div>
+            <label for="name">Name: </label>
+            <input id='name' type='text' name='name'>
+          </div>
+          <div>
+            <label for="email">Email: </label>
+            <input id='email' type='text' name='email'>
+          </div>
+          <div>
+            <label for="message">Message: </label><br>
+            <textarea id="message" rows=5 cols=50 name="message"></textarea>
+          </div>
+          <button onclick="sign()">Sign</button>
+      </div>
+
+      <h2>Entries</h2>
+      <div id="entries"></div>
+      
+    </div>
+  </body>
+</html>
