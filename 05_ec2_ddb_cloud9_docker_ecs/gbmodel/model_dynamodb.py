@@ -4,7 +4,7 @@ import boto3
 
 class model(Model):
     def __init__(self):
-        self.resource = boto3.resource("dynamodb")
+        self.resource = boto3.resource("dynamodb", region_name="us-east-1")
         self.table = self.resource.Table('guestbook')
         try:
             self.table.load()
