@@ -1,7 +1,7 @@
 """
 A simple guestbook flask app.
 """
-import flask
+import flask, os
 from flask.views import MethodView
 from index import Index
 from sign import Sign
@@ -17,4 +17,4 @@ app.add_url_rule('/sign/',
                  methods=['GET', 'POST'])
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=80, debug=True)
+    app.run(host='0.0.0.0',port=int(os.environ.get('PORT',5000)))
