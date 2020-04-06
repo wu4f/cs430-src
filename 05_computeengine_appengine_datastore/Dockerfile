@@ -11,7 +11,7 @@ COPY . /app
 WORKDIR /app
 
 # Install the Python packages specified by requirements.txt into the container
-RUN pip install -r requirements.txt
+RUN pip3 install -r requirements.txt
 
 # Set the parameters to the program
 CMD exec gunicorn --bind :$PORT --workers 1 --threads 8 app:app
