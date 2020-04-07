@@ -12,10 +12,12 @@ spec:
     spec:
       containers:
       - name: guestbook-app
-        image: gcr.io/cs410c-wuchang-201515/k8s_gb
+        image: gcr.io/cs410c-wuchang-201515/gcp_gb
         env:
         - name: PROCESSES
           value: guestbook
+        - name: PORT
+          value: "8000"
         ports:
         - containerPort: 8000
 ---
