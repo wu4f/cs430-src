@@ -34,8 +34,11 @@ def entry(request):
         else:
             raise ValueError("JSON missing name, email, or message property")
 
-        response = make_response(request_json)
+        entries = [dict(name=row[0], email=row[1], date=str(row[2]), message=row[3] )
+                       for row in model.select()]
+
+        response = make_response(json.dumps(entries))
         response.headers['Content-Type'] = 'application/json'
-        return request_json, 201
+        return response, 200
 
     return abort(403)
