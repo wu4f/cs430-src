@@ -2,6 +2,14 @@ from flask import make_response, abort
 import gbmodel
 import json
 
+def handle_cors(method):
+    response = make_response()
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Methods'] = method
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
+    response.headers['Access-Control-Max-Age'] = '3600'
+    return response
+
 def entries(request):
     """ Guestbook API endpoint
         :param request: flask.Request object
@@ -9,12 +17,14 @@ def entries(request):
     """
     model = gbmodel.get_model()
     if request.method == 'GET':
-        entries = [dict(name=row[0], email=row[1], date=str(row[2]), message=row[3] )
-                       for row in model.select()]
-
+        entries = [dict(name=row[0], email=row[1], date=str(row[2]), message=row[3] ) for row in model.select()]
         response = make_response(json.dumps(entries))
         response.headers['Content-Type'] = 'application/json'
+        response.headers['Access-Control-Allow-Origin'] = '*'
         return response, 200
+
+    if request.method == 'OPTIONS':
+        return handle_cors('GET'), 200
 
     return abort(403)
 
@@ -34,11 +44,13 @@ def entry(request):
         else:
             raise ValueError("JSON missing name, email, or message property")
 
-        entries = [dict(name=row[0], email=row[1], date=str(row[2]), message=row[3] )
-                       for row in model.select()]
-
+        entries = [dict(name=row[0], email=row[1], date=str(row[2]), message=row[3] ) for row in model.select()]
         response = make_response(json.dumps(entries))
         response.headers['Content-Type'] = 'application/json'
+        response.headers['Access-Control-Allow-Origin'] = '*'
         return response, 200
+
+    if request.method == 'OPTIONS':
+        return handle_cors('GET'), 200
 
     return abort(403)
