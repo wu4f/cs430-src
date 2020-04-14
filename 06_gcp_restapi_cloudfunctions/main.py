@@ -2,21 +2,28 @@ from flask import make_response, abort
 import gbmodel
 import json
 
-def gb(request):
+def entries(request):
+    """ Guestbook API endpoint
+        :param request: flask.Request object
+        :return: flask.Response object (in JSON), HTTP status code
+    """
+    model = gbmodel.get_model()
+    if request.method == 'GET':
+        entries = [dict(name=row[0], email=row[1], date=str(row[2]), message=row[3] )
+                       for row in model.select()]
+
+        response = make_response(json.dumps(entries))
+        response.headers['Content-Type'] = 'application/json'
+        return response, 200
+
+    return abort(403)
+
+def entry(request):
     """ Guestbook API endpoint
         :param request: flask.Request object
         :return: flack.Response object (in JSON), HTTP status code
     """
     model = gbmodel.get_model()
-    if request.method == 'GET':
-        entries = [dict(name=row[0], email=row[1], signed_on=str(row[2]), message=row[3] )
-                       for row in model.select()]
-
-        entries_dict = { i:x for i,x in enumerate(entries,1)}
-
-        response = make_response(json.dumps(entries_dict))
-        response.headers['Content-Type'] = 'application/json'
-        return response, 200
 
     if request.method == 'POST' and request.headers['content-type'] == 'application/json':
         request_json = request.get_json(silent=True)
