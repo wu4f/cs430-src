@@ -1,5 +1,4 @@
-
-m flask import make_response, abort
+from flask import make_response, abort
 import gbmodel
 import json
 
