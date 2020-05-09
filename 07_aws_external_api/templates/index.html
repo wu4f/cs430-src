@@ -1,13 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
     <h2>Guestbook</h2>
-    {% if quote %}
-        <img src={{ quote['image_url'] }}>
-        <p>
-            "{{quote['quote']}}" -- {{quote['author']}}
-        </p>
-    {% endif %}
-
     <h3>Sign <a href="{{ url_for('sign') }}">here</a></h3>
     <embed src="{{embed_url}}" height="250">
     <h3>Entries</h3>
