@@ -37,7 +37,7 @@ systemctl start $SITE
 systemctl enable $SITE
 systemctl restart nginx
 
-certbot --nginx -d $1 -n -m wuchang@pdx.edu --agree-tos --redirect
+certbot --nginx -d $1 -n -m <OdinID>@pdx.edu --agree-tos --redirect
 
 #   must be able to write to.  Add user to www-data group.
 echo "Installation complete.  Please logout and log back in for group and umask changes to take effect"
