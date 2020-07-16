@@ -1,0 +1,11 @@
+# Web framework
+flask
+
+# AWS libraries
+boto3
+
+# Python WSGI HTTP server (connects web servers such as nginx to app)
+gunicorn
+
+# Giphy Python client
+giphy_client
