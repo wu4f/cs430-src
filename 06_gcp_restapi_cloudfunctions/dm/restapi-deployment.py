@@ -45,9 +45,8 @@ def uploadCloudFunction(credentials):
     os.remove('./function.zip')
     return upload_url
 
-def deployFunction(deployment_api, deployment_name, project_id, location_name, upload_url, function_name):
-    restapi_yaml = f'''
-    resources:
+def generateDeploymentYaml(project_id, location_name, upload_url, function_name):
+    yaml = f'''
     - type: gcp-types/cloudfunctions-v1:projects.locations.functions
       name: {function_name}
       properties:
@@ -68,25 +67,27 @@ def deployFunction(deployment_api, deployment_name, project_id, location_name, u
             members:
             - allUsers
     '''
+    return yaml
 
+def deploy(deployment_api, deployment_name, project_id, location_name, yaml):
     # Create request to insert deployment
     request_body = {
         "name": deployment_name,
         "target": {
             "config": {
-                "content": restapi_yaml
+                "content": yaml
             },
             "imports": []
         },
         "labels": []
     }
-    print(f"Launching deployment of /{function_name} endpoint")
+    print(f"Launching deployment")
     operation = deployment_api.deployments().insert(project=project_id, body=request_body).execute()
     print(operation)
     print(operation['name'])
     op_name = operation['name']
     wait_on_operation(op_name, deployment_api, project_id)
-    print(f'\nFinished operation.  /{function_name} endpoint available at: https://{location_name}-{project_id}.cloudfunctions.net/{function_name}')
+    print(f'\nFinished operation.  https://{location_name}-{project_id}.cloudfunctions.net/')
     return True
 
 # Instantiate Deployment Manager API
@@ -105,4 +106,8 @@ upload_url = uploadCloudFunction(credentials)
 
 deployment_api = discovery.build('deploymentmanager', 'v2', credentials=credentials)
 
-deployFunction(deployment_api, deployment_name, project_id, location_name, upload_url, 'entries')
+yaml = f'''resources:
+{generateDeploymentYaml(project_id, location_name, upload_url, 'entries')}
+{generateDeploymentYaml(project_id, location_name, upload_url, 'entry')}'''
+print(yaml)
+deploy(deployment_api, deployment_name, project_id, location_name, yaml)
