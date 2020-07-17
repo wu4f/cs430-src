@@ -1,14 +1,12 @@
 import google.auth
 from googleapiclient import discovery
-from googleapiclient.errors import HttpError
 from google.cloud import storage
-import os
-import time
+import os, sys, time
 
-def wait_on_operation(opname, deployment_api, project_id):
+def wait_on_operation(op_name, deployment_api, project_id):
     while True: 
         time.sleep(1)
-        print('.',end="",flush=True)
+        print('.', end="", flush=True)
         op_status = deployment_api.operations().get(
             project=project_id,
             operation=op_name).execute()['status']
@@ -16,7 +14,14 @@ def wait_on_operation(opname, deployment_api, project_id):
             break;
     return True
 
-deployment_name = f"{os.environ['GOOGLE_CLOUD_PROJECT']}-frontend"
+location_name = 'us-west1'
+if len(sys.argv) != 2:
+    print("Usage: python frontend-deployment.py <NameOfDeployment>")
+    exit()
+else:
+    deployment_name = sys.argv[1]
+
+# Instantiate Deployment Manager API
 credentials, project_id = google.auth.default()
 deployment_api = discovery.build('deploymentmanager', 'v2', credentials=credentials)
 
@@ -24,7 +29,7 @@ frontend_yaml = f''' resources:
   - type: gcp-types/storage-v1:buckets
     name: {deployment_name}
     properties:
-      region: us-west1
+      region: {location_name}
       storageClass: STANDARD
       acl:
         - role: READER
