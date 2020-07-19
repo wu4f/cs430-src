@@ -20,7 +20,6 @@ def wait_on_operation(op_name, deployment_api, project_id):
 
 def uploadCloudFunction(credentials):
     # Create zipfile for deploying function
-    print(f'Creating zip file with Cloud Function code...')
     with zipfile.ZipFile('./function.zip', 'w') as z:
         z.write('../main.py', 'main.py')
         z.write('../requirements.txt', 'requirements.txt')
@@ -35,7 +34,6 @@ def uploadCloudFunction(credentials):
     # Generate upload URL from Cloud Function API
     upload_url = cf_api.projects().locations().functions().generateUploadUrl(parent=parent).execute()['uploadUrl']
     # Upload function
-    print(f'Uploading function.zip to temporary bucket')
     h = httplib2.Http()
     headers = {'Content-Type': 'application/zip',
             'x-goog-content-length-range': '0,104857600'}
@@ -43,6 +41,8 @@ def uploadCloudFunction(credentials):
         h.request(upload_url, method='PUT', headers=headers, body=f)
     # Delete zip
     os.remove('./function.zip')
+    print(f'Created and uploaded zip file with function code to {upload_url}')
+    time.sleep(1)
     return upload_url
 
 def generateDeploymentYaml(project_id, location_name, upload_url, function_name):
@@ -81,13 +81,10 @@ def deploy(deployment_api, deployment_name, project_id, location_name, yaml):
         },
         "labels": []
     }
-    print(f"Launching deployment")
     operation = deployment_api.deployments().insert(project=project_id, body=request_body).execute()
-    print(operation)
-    print(operation['name'])
     op_name = operation['name']
     wait_on_operation(op_name, deployment_api, project_id)
-    print(f'\nFinished operation.  https://{location_name}-{project_id}.cloudfunctions.net/')
+    print(f'\nFinished deployment operation: {operation}')
     return True
 
 # Instantiate Deployment Manager API
@@ -109,5 +106,7 @@ deployment_api = discovery.build('deploymentmanager', 'v2', credentials=credenti
 yaml = f'''resources:
 {generateDeploymentYaml(project_id, location_name, upload_url, 'entries')}
 {generateDeploymentYaml(project_id, location_name, upload_url, 'entry')}'''
-print(yaml)
+
+print(f'Launching deployment using specification: \n {yaml}')
 deploy(deployment_api, deployment_name, project_id, location_name, yaml)
+print(f'baseApiUrl for guestbook.js is https://{location_name}-{project_id}.cloudfunctions.net/')
