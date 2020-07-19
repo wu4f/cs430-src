@@ -1,11 +1,7 @@
-import google.auth
 from googleapiclient import discovery
 from google.cloud import storage
-import time
-import os
-import sys
-import zipfile
-import httplib2
+import google.auth
+import time, os sys, zipfile, httplib2
 
 def wait_on_operation(op_name, deployment_api, project_id):
     while True:
