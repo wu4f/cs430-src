@@ -1,7 +1,7 @@
-from googleapiclient import discovery
-from google.cloud import storage
+import apiclient.discovery
 import google.auth
-import time, os sys, zipfile, httplib2
+import requests
+import time, os, sys, zipfile
 
 def wait_on_operation(op_name, deployment_api, project_id):
     while True:
@@ -25,16 +25,15 @@ def uploadCloudFunction(credentials):
                 arc_path = file_path.replace('../', '')
                 z.write(file_path, arcname=arc_path)
     # Instantiate Cloud Function API
-    cf_api = discovery.build('cloudfunctions', 'v1', credentials=credentials)
+    cf_api = apiclient.discovery.build('cloudfunctions', 'v1', credentials=credentials)
     parent = f'projects/{project_id}/locations/{location_name}'
     # Generate upload URL from Cloud Function API
     upload_url = cf_api.projects().locations().functions().generateUploadUrl(parent=parent).execute()['uploadUrl']
     # Upload function
-    h = httplib2.Http()
     headers = {'Content-Type': 'application/zip',
             'x-goog-content-length-range': '0,104857600'}
     with open('./function.zip', 'rb') as f:
-        h.request(upload_url, method='PUT', headers=headers, body=f)
+        requests.put(upload_url, f, headers=headers)
     # Delete zip
     os.remove('./function.zip')
     print(f'Created and uploaded zip file with function code to {upload_url}')
@@ -43,8 +42,8 @@ def uploadCloudFunction(credentials):
 
 def generateDeploymentYaml(project_id, location_name, upload_url, function_name):
     yaml = f'''
-    - type: gcp-types/cloudfunctions-v1:projects.locations.functions
-      name: {function_name}
+    - name: {function_name}
+      type: gcp-types/cloudfunctions-v1:projects.locations.functions
       properties:
         function: {function_name}
         parent: projects/{project_id}/locations/{location_name}
@@ -65,24 +64,6 @@ def generateDeploymentYaml(project_id, location_name, upload_url, function_name)
     '''
     return yaml
 
-def deploy(deployment_api, deployment_name, project_id, location_name, yaml):
-    # Create request to insert deployment
-    request_body = {
-        "name": deployment_name,
-        "target": {
-            "config": {
-                "content": yaml
-            },
-            "imports": []
-        },
-        "labels": []
-    }
-    operation = deployment_api.deployments().insert(project=project_id, body=request_body).execute()
-    op_name = operation['name']
-    wait_on_operation(op_name, deployment_api, project_id)
-    print(f'\nFinished deployment operation: {operation}')
-    return True
-
 # Instantiate Deployment Manager API
 credentials, project_id = google.auth.default()
 
@@ -97,12 +78,24 @@ service_account = f"guestbook@{project_id}.iam.gserviceaccount.com"
 # Upload Cloud Function code
 upload_url = uploadCloudFunction(credentials)
 
-deployment_api = discovery.build('deploymentmanager', 'v2', credentials=credentials)
+deployment_api = apiclient.discovery.build('deploymentmanager', 'v2', credentials=credentials)
 
 yaml = f'''resources:
 {generateDeploymentYaml(project_id, location_name, upload_url, 'entries')}
 {generateDeploymentYaml(project_id, location_name, upload_url, 'entry')}'''
 
 print(f'Launching deployment using specification: \n {yaml}')
-deploy(deployment_api, deployment_name, project_id, location_name, yaml)
+# Create request to insert deployment
+request_body = {
+    "name": deployment_name,
+    "target": {
+        "config": {
+            "content": yaml
+        },
+    }
+}
+operation = deployment_api.deployments().insert(project=project_id, body=request_body).execute()
+op_name = operation['name']
+wait_on_operation(op_name, deployment_api, project_id)
+print(f'\nFinished deployment operation: {operation}')
 print(f'baseApiUrl for guestbook.js is https://{location_name}-{project_id}.cloudfunctions.net/')
