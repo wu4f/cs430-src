@@ -18,8 +18,6 @@ This repository has the code examples used to show a Guestbook web application c
 |     Cloud Datastore model
 ├── 05_aws_dynamodb
 |     EC2/Cloud9, EB, and ECS versions with DynamoDB model
-├── 05_aws_dynamodb
-|     EC2/Cloud9, EB, and ECS versions with DynamoDB model
 ├── 06_gcp_restapi_cloudfunctions
 |     REST API version of Guestbook using Cloud Functions
 └── 06_aws_restapi_lambda_cdk
