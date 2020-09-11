@@ -39,7 +39,6 @@ def entry(request):
         request_json = request.get_json(silent=True)
 
         if all(key in request_json for key in ('name', 'email', 'message')):
-            model = gbmodel.get_model()
             model.insert(request_json['name'], request_json['email'], request_json['message'])
         else:
             raise ValueError("JSON missing name, email, or message property")
