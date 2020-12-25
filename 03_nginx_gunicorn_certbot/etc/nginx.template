@@ -5,8 +5,8 @@ server {
     root PROJECT_DIR;
 
     location / {
-         include uwsgi_params;
-         uwsgi_pass unix:PROJECT_DIR/uwsgi.sock;
+         include proxy_params;
+         proxy_pass http://unix:PROJECT_DIR/gunicorn.sock;
      }
 
      location /static {

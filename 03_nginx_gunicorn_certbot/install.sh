@@ -10,27 +10,19 @@ SITE=`echo $1 | sed -e 's/\..*//'`
 
 # Install all required system packages
 apt update
-apt install -y python3-pip python3-dev build-essential libssl-dev libffi-dev python3-setuptools virtualenv nginx python-certbot-nginx
+apt install -y python3-pip python3-dev build-essential libssl-dev libffi-dev python3-setuptools virtualenv nginx python3-certbot-nginx
 
 # Install all required python packages
 virtualenv -p python3 env
 source env/bin/activate
-pip install --upgrade -r requirements.txt
+pip3 install --upgrade -r requirements.txt
 
 # Set up systemd service for site
-sed s+PROJECT_USER+$SUDO_USER+ etc/systemd.template | sed s+PROJECT_DIR+$PWD+ > /etc/systemd/system/$SITE.service
+sed s+PROJECT_USER+$SUDO_USER+ etc/systemd.template | sed s+PROJECT_DIR+$PWD+g > /etc/systemd/system/$SITE.service
 
 # Configure nginx for site
 sed s+PROJECT_HOST+$1+ etc/nginx.template | sed s+PROJECT_DIR+$PWD+ > /etc/nginx/sites-available/$SITE
 ln -s /etc/nginx/sites-available/$SITE /etc/nginx/sites-enabled
-
-# Change ownership to regular user, but make group www-data so that
-#   nginx can access.  Note: unix socket must be created by nginx in
-#   current directory so make www-data own the top level directory
-chown -R $SUDO_USER $PWD
-chgrp -R www-data $PWD
-chmod g+wX -R $PWD
-chown www-data $PWD
 
 # Restart all services
 systemctl start $SITE
@@ -39,5 +31,4 @@ systemctl restart nginx
 
 certbot --nginx -d $1 -n -m <OdinID>@pdx.edu --agree-tos --redirect
 
-#   must be able to write to.  Add user to www-data group.
-echo "Installation complete.  Please logout and log back in for group and umask changes to take effect"
+echo "Installation complete."
