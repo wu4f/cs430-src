@@ -18,7 +18,7 @@ source env/bin/activate
 pip3 install --upgrade -r requirements.txt
 
 # Set up systemd service for site
-sed s+PROJECT_USER+$SUDO_USER+ etc/systemd.template | sed s+PROJECT_DIR+$PWD+g > /etc/systemd/system/$SITE.service
+sed s+PROJECT_USER+$SUDO_USER+ etc/systemd.template | sed s+PROJECT_DIR+$PWD+ > /etc/systemd/system/$SITE.service
 
 # Configure nginx for site
 sed s+PROJECT_HOST+$1+ etc/nginx.template | sed s+PROJECT_DIR+$PWD+ > /etc/nginx/sites-available/$SITE
