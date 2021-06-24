@@ -12,7 +12,7 @@ app.add_url_rule('/',
                  view_func=Index.as_view('index'),
                  methods=["GET"])
 
-app.add_url_rule('/sign/',
+app.add_url_rule('/sign',
                  view_func=Sign.as_view('sign'),
                  methods=['GET', 'POST'])
 
