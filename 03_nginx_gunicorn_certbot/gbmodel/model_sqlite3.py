@@ -1,6 +1,6 @@
 """
 A simple guestbook flask app.
-ata is stored in a SQLite database that looks something like the following:
+Data is stored in a SQLite database that looks something like the following:
 
 +------------+------------------+------------+----------------+
 | Name       | Email            | signed_on  | message        |
