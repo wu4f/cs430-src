@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h2>Sign Guestbook</h2>
+    <img src="{{ picture }}" width=25px height=25px>
+    {{ name }} &lt;{{ email }}&gt;
+    <form action="{{ url_for('sign') }}" method=post>
+        <input type="hidden" name="name" value="{{ name }}">
+        <input type="hidden" name="email" value="{{ email }}">
+        <input type="hidden" name="picture" value="{{ picture }}">
+	    <textarea rows=5 cols=50 name=message></textarea></p>
+	    <p><input type=submit value=Sign></p>
+    </form>
+{% endblock %}

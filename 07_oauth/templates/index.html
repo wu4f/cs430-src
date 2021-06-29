@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h2>Guestbook</h2>
+
+    <h3>Sign <a href="{{ url_for('sign') }}">here</a> | <a href="{{ url_for('logout') }}"> Logout</a></h3>
+    <h3>Entries</h3>
+    {% for entry in entries %}
+        <p class=entry>
+           <img src={{ entry.picture }} width=25px height=25px> {{ entry.name }} &lt;{{ entry.email }}&gt;
+	    <br>on {{ entry.signed_on }}<br>
+	    {{ entry.message }}
+        </p>
+    {% endfor %}
+
+{% endblock %}
