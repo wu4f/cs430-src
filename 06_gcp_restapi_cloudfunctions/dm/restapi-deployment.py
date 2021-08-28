@@ -53,14 +53,11 @@ def generateDeploymentYaml(project_id, location_name, upload_url, function_name)
         httpsTrigger: {{}}
         serviceAccountEmail: guestbook@{project_id}.iam.gserviceaccount.com
     - name: {function_name}-iam
-      action: gcp-types/cloudfunctions-v1:cloudfunctions.projects.locations.functions.setIamPolicy
+      type: gcp-types/cloudfunctions-v1:virtual.projects.locations.functions.iamMemberBinding
       properties:
         resource: $(ref.{function_name}.name)
-        policy:
-          bindings:
-          - role: roles/cloudfunctions.invoker
-            members:
-            - allUsers
+        member: allUsers
+        role: roles/cloudfunctions.invoker
     '''
     return yaml
 
