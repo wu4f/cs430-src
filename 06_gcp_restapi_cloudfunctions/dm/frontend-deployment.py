@@ -61,4 +61,4 @@ for object_file in ['index.html', 'static/guestbook.js', 'static/style.css']:
     blob = bucket.blob(object_file)
     blob.upload_from_filename(f'../frontend-src/{object_file}')
 
-print(f'Finished deployment.  Site is https://storage.cloud.google.com/{deployment_name}/index.html')
+print(f'Finished deployment.  Site is https://storage.googleapis.com/{deployment_name}/index.html')
