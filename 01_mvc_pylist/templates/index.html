@@ -1,21 +1,21 @@
 {% extends "layout.html" %}
 {% block content %}
-    <h2>Guestbook</h2>
-    <form action="{{ url_for('sign') }}" method=post>
-	<p class="heading">Name: <input type=text name=name>
-	<p class="heading">Email: <input type=text name=email>
-        <p class="heading">Message:
-	<textarea rows=5 cols=50 name=message></textarea></p>
-	<p><input type=submit value=Sign></p>
-    </form>
+  <h2>Guestbook</h2>
+  <form action="{{ url_for('sign') }}" method="post" class="box">
+    <label><span>Name:</span><input type="text" name="name" required /></label>
+    <label><span>Email:</span><input type="text" name="email" /></label>
+    <label><span>Message:</span><textarea name="message" required></textarea></label>
+    <label><span></span><input type="submit" value="Sign" /></label>
+  </form>
 
-    <h2>Entries</h2>
-    {% for entry in entries %}
-        <p class=entry>
-            {{ entry.name }} &lt;{{ entry.email }}&gt;
-	    <br>signed on {{ entry.signed_on }}<br>
-	    {{ entry.message }}
-        </p>
-    {% endfor %}
-
+  <h2>Entries</h2>
+  {% for entry in entries|reverse %}
+    <section class="entry box">
+      <pre>{{ entry.message }}</pre>
+      <header>
+        {{ entry.name }} {% if entry.email %}&lt;{{ entry.email }}&gt;{% endif %}
+        <em>signed on {{ entry.signed_on.strftime("%d.%m.%Y at %H:%M") }}</em>
+      </header>
+    </section>
+  {% endfor %}
 {% endblock %}

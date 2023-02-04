@@ -2,7 +2,7 @@
 Data is stored in a Python list.  Returns a list of lists
   upon retrieval
 """
-from datetime import date
+from datetime import datetime
 from Model import Model
 
 class model(Model):
@@ -25,6 +25,6 @@ class model(Model):
         :param message: String
         :return: True
         """
-        params = [name, email, date.today(), message]
+        params = [name, email, datetime.now(), message]
         self.guestentries.append(params)
         return True
