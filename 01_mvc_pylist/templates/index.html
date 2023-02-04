@@ -13,7 +13,7 @@
     <section class="entry box">
       <pre>{{ entry.message }}</pre>
       <header>
-        {{ entry.name }} {% if entry.email %}&lt;{{ entry.email }}&gt;{% endif %}
+        {{ entry.name }} {% if entry.email %}&lt;{{ entry.email }}&gt;{% endif %}<br>
         <em>signed on {{ entry.signed_on.strftime("%d.%m.%Y at %H:%M") }}</em>
       </header>
     </section>
