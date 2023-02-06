@@ -2,7 +2,6 @@
 A simple guestbook flask app.
 """
 import flask
-from flask.views import MethodView
 from index import Index
 from sign import Sign
 
