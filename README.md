@@ -6,7 +6,7 @@ Associated codelabs that go along with the code:
 01_mvc_pylist
   C1: 1FGdawnO3q3_S2j9XzXiHx_amaPc1MoFbLuAXzpuy8og  (Python)
 02_mvp_modules_sqlite3
-  C2:   (sqlite3)
+  C2: 1soKLnsCqVP8N2y-nKl6FQVc1Kjs2QErcYGNTuZ5TqYI  (sqlite3)
 03_nginx_uwsgi_certbot
   C3:   (nginx/certbot)
 04_container_dockerhub

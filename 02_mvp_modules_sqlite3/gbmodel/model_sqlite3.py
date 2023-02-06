@@ -24,9 +24,9 @@ class model(Model):
         connection = sqlite3.connect(DB_FILE)
         cursor = connection.cursor()
         try:
-            cursor.execute("select count(rowid) from guestbook")
+            cursor.execute("SELECT count(rowid) FROM guestbook")
         except sqlite3.OperationalError:
-            cursor.execute("create table guestbook (name text, email text, signed_on datetime, message)")
+            cursor.execute("CREATE TABLE guestbook (name text, email text, signed_on timestamp, message)")
         cursor.close()
 
     def select(self):
@@ -35,7 +35,9 @@ class model(Model):
         Each row contains: name, email, date, message
         :return: List of lists containing all rows of database
         """
-        connection = sqlite3.connect(DB_FILE)
+        # We use PARSE_DECLTYPES to get the datetime object instead of a string
+        # see https://docs.python.org/3/library/sqlite3.html#default-adapters-and-converters
+        connection = sqlite3.connect(DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
         cursor = connection.cursor()
         cursor.execute("SELECT * FROM guestbook")
         return cursor.fetchall()
@@ -52,7 +54,7 @@ class model(Model):
         params = {'name':name, 'email':email, 'datetime':datetime.now(), 'message':message}
         connection = sqlite3.connect(DB_FILE)
         cursor = connection.cursor()
-        cursor.execute("insert into guestbook (name, email, signed_on, message) VALUES (:name, :email, :datetime, :message)", params)
+        cursor.execute("INSERT INTO guestbook (name, email, signed_on, message) VALUES (:name, :email, :datetime, :message)", params)
 
         connection.commit()
         cursor.close()
