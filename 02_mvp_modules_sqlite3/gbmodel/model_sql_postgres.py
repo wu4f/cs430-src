@@ -15,34 +15,37 @@ This can be created with the following SQL (see bottom of this file):
 """
 from datetime import datetime
 from .model import Model
-import sqlite3
+import psycopg
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
-DB_FILE = 'guestbook.db'    # file for our Database
+DB_CONNECTION = "host=%s port=%s dbname=%s user=%s password=%s" % (os.getenv('DB_HOST'), os.getenv('DB_PORT'), os.getenv('DB_NAME'), os.getenv('DB_USER'), os.getenv('DB_PASS'))
 
-class ModelSqlite(Model):
+class ModelSqlPostgres(Model):
     def __init__(self):
         # Make sure our database exists
-        connection = sqlite3.connect(DB_FILE)
-        cursor = connection.cursor()
-        try:
-            cursor.execute("SELECT count(rowid) FROM entries")
-        except sqlite3.OperationalError:
-            cursor.execute("CREATE TABLE entries (name text, email text, signed_on timestamp, message text)")
-        cursor.close()
-        connection.close()
+        with psycopg.connect(DB_CONNECTION) as connection:
+            with connection.cursor() as cursor:
+                try:
+                    cursor.execute("SELECT count(*) FROM entries")
+                except psycopg.errors.UndefinedTable:
+                    connection.rollback()
+                    cursor.execute("CREATE TABLE entries (id serial, name text, email text, signed_on timestamp, message text)")
+                    connection.commit()
 
     def select(self):
         """
         Gets all rows from the database
-        Each row contains: name, email, date, message
+        Each row contains: name, email, signed_on, message, id
         :return: List of lists containing all rows of database
         """
         # We use PARSE_DECLTYPES to get the datetime object instead of a string
         # see https://docs.python.org/3/library/sqlite3.html#default-adapters-and-converters
-        connection = sqlite3.connect(DB_FILE, detect_types=sqlite3.PARSE_DECLTYPES)
-        cursor = connection.cursor()
-        cursor.execute("SELECT * FROM entries")
-        return cursor.fetchall()
+        with psycopg.connect(DB_CONNECTION) as connection:
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT name, email, signed_on, message, id FROM entries")
+                return cursor.fetchall()
 
     def insert(self, name, email, message):
         """
@@ -54,8 +57,8 @@ class ModelSqlite(Model):
         :raises: Database errors on connection and insertion
         """
         params = {'name':name, 'email':email, 'datetime':datetime.now(), 'message':message}
-        connection = sqlite3.connect(DB_FILE)
-        cursor = connection.cursor()
-        cursor.execute("INSERT INTO entries (name, email, signed_on, message) VALUES (:name, :email, :datetime, :message)", params)
-        connection.commit()
+        with psycopg.connect(DB_CONNECTION) as connection:
+            with connection.cursor() as cursor:
+                cursor.execute("INSERT INTO entries (name, email, signed_on, message) VALUES (%(name)s, %(email)s, %(datetime)s, %(message)s)", params)
+                connection.commit()
         return True

@@ -1,1 +1,3 @@
 flask
+psycopg[binary]
+python-dotenv

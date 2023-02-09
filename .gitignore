@@ -2,4 +2,5 @@
 *.db
 env
 entries.db
+guestbook.db
 __pycache__
