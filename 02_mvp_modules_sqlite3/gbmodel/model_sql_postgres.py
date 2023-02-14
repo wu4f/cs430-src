@@ -40,8 +40,6 @@ class ModelSqlPostgres(Model):
         Each row contains: name, email, signed_on, message, id
         :return: List of lists containing all rows of database
         """
-        # We use PARSE_DECLTYPES to get the datetime object instead of a string
-        # see https://docs.python.org/3/library/sqlite3.html#default-adapters-and-converters
         with psycopg.connect(DB_CONNECTION) as connection:
             with connection.cursor() as cursor:
                 cursor.execute("SELECT name, email, signed_on, message, id FROM entries")
