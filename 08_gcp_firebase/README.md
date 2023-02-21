@@ -18,15 +18,15 @@ https://github.com/firebase/quickstart-js/blob/master/README.md
 
 
 ## Features
-   - storage
-   - hosting
-   - firestore
-   - functions
-   - remote config
-   - emulators
-   - auth
-   - web push?
-   - analytics
-   - performance?
+    - hosting
+    - auth
+    - storage - custom avatar?
+    - functions - blur/check image?
+    - firestore - messages
+    - remote config - enable image upload
+    - web push - notifications new message
+    - analytics
+    - performance?
+    - emulators
 
 
