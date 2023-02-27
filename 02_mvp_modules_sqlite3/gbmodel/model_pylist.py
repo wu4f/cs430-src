@@ -2,7 +2,7 @@
 Python list model
 """
 from datetime import date
-from .model import Model
+from gbmodel.model import Model
 
 class ModelPylist(Model):
     def __init__(self):
