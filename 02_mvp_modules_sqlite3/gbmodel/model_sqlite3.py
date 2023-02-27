@@ -14,7 +14,7 @@ This can be created with the following SQL (see bottom of this file):
 
 """
 from datetime import datetime
-from gbmodel.model import Model
+from .model import Model
 import sqlite3
 
 DB_FILE = 'guestbook.db'    # file for our Database

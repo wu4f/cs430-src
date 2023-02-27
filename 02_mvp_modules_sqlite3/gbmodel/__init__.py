@@ -3,11 +3,11 @@ model_backend = 'sqlite3'
 # model_backend = 'pylist'
 
 if model_backend == 'sqlite3':
-    from gbmodel.model_sqlite3 import ModelSqlite as model
+    from .model_sqlite3 import ModelSqlite as model
 elif model_backend == 'pylist':
-    from gbmodel.model_pylist import ModelPylist as model
+    from .model_pylist import ModelPylist as model
 elif model_backend == 'postgres':
-    from gbmodel.model_sql_postgres import ModelSqlPostgres as model
+    from .model_sql_postgres import ModelSqlPostgres as model
 else:
     raise ValueError("No appropriate databackend configured. ")
 
