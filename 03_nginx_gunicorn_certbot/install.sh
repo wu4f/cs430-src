@@ -1,19 +1,19 @@
 #!/bin/bash
-# Installs on Google Cloud Platform's Compute Engine for Ubuntu 18.04 LTS
+# Installs on Debian/Ubuntu VM
 # Make sure script is called with DNS name desired
-if [ $# -ne 1 ]; then
-    echo "Usage: sudo install.sh <DNS_Name>"
+if [ $# -ne 2 ]; then
+    echo "Usage: sudo install.sh <DNS_Name> <Email_Address>"
 fi
 
 # Name the service based on first part of DNS name
 SITE=`echo $1 | sed -e 's/\..*//'`
 
 # Install all required system packages
-apt update
-apt install -y python3-pip python3-dev build-essential libssl-dev libffi-dev python3-setuptools virtualenv nginx python3-certbot-nginx
+apt-get update
+apt-get install -y nginx python3 python3-pip python3-venv nginx certbot python3-certbot-nginx
 
 # Install all required python packages
-virtualenv -p python3 env
+python3 -m venv env
 source env/bin/activate
 pip3 install --upgrade -r requirements.txt
 
@@ -29,6 +29,6 @@ systemctl start $SITE
 systemctl enable $SITE
 systemctl restart nginx
 
-certbot --nginx -d $1 -n -m <OdinID>@pdx.edu --agree-tos --redirect
+certbot --nginx -d $1 --noninteractive -m $2 --agree-tos --redirect
 
 echo "Installation complete."

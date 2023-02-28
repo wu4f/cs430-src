@@ -1,5 +1,5 @@
 [Unit]
-Description=gunicorn instance to serve project
+Description=Gunicorn instance to serve project
 After=network.target
 
 [Service]
@@ -7,7 +7,7 @@ User=PROJECT_USER
 Group=www-data
 WorkingDirectory=PROJECT_DIR
 Environment="PATH=PROJECT_DIR/env/bin"
-ExecStart=PROJECT_DIR/env/bin/gunicorn --workers 1 --threads 8 --bind unix:gunicorn.sock -m 007 wsgi:app
+ExecStart=PROJECT_DIR/env/bin/gunicorn --workers 1 --threads 8 --bind unix:gunicorn.sock -m 007 app:app
 
 [Install]
 WantedBy=multi-user.target
