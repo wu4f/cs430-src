@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from .Model import Model
+from .model import Model
 from datetime import datetime
 from google.cloud import datastore
 
@@ -32,9 +32,9 @@ def from_datastore(entity):
         return None
     if isinstance(entity, list):
         entity = entity.pop()
-    return [entity['name'],entity['email'],entity['date'],entity['message']]
+    return [entity['name'],entity['email'],entity['datetime'],entity['message']]
 
-class model(Model):
+class ModelDatastore(Model):
     def __init__(self):
         self.client = datastore.Client('YOUR_PROJECT_ID')
 
@@ -49,7 +49,7 @@ class model(Model):
         rev.update( {
             'name': name,
             'email' : email,
-            'date' : datetime.today(),
+            'datetime' : datetime.now(),
             'message' : message
             })
         self.client.put(rev)
