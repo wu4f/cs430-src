@@ -2,9 +2,9 @@
 Python list model
 """
 from datetime import date
-from .Model import Model
+from .model import Model
 
-class model(Model):
+class ModelPylist(Model):
     def __init__(self):
         self.guestentries = []
 

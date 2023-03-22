@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h2>Guestbook</h2>
+    <h3><a href="{{ url_for('sign') }}"><img src="{{ url_for('static', filename='sign_here.png') }}" alt="sign here"></a></h3>
+    <h3>Entries</h3>
+    {% for entry in entries|reverse %}
+      <section class="entry box">
+        <pre>{{ entry.message }}</pre>
+        <header>
+          {{ entry.name }} {% if entry.email %}&lt;{{ entry.email }}&gt;{% endif %}
+          <em>signed on {{ entry.signed_on.strftime("%d.%m.%Y at %H:%M") }}</em>
+        </header>
+      </section>
+    {% endfor %}
+
+{% endblock %}

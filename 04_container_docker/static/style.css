@@ -1,0 +1,82 @@
+:root {
+    --primary-color: #0d47a1;
+    --border: 1px solid #888;
+}
+
+body,
+input,
+textarea,
+pre {
+    font-family: "Helvetica", sans-serif;
+    font-size: 16pt;
+}
+
+a,
+h1,
+h2 {
+    color: var(--primary-color);
+}
+
+form {
+    margin: 0 auto;
+}
+
+label {
+    display: flex;
+    margin: 1em 0;
+}
+
+label span {
+    width: 120px;
+}
+
+label input,
+label textarea {
+    flex: 1;
+}
+
+textarea {
+    height: 100px;
+}
+
+input[type="submit"] {
+    padding: .5em 1em;
+    background: var(--primary-color);
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    display: block;
+    width: 100%;
+}
+
+input[type="submit"]:hover {
+    background: #1565c0;
+}
+
+pre {
+    margin: 0;
+    margin-bottom: .5em;
+}
+
+section>header {
+    font-size: 12pt;
+    border-top: var(--border);
+    padding-top: .5em;
+}
+
+.page {
+    margin: 0 auto;
+    padding: .5em;
+    max-width: 500px;
+}
+
+.box {
+    padding: 8px;
+    border: var(--border);
+    border-radius: 3px;
+}
+
+.entry {
+    margin-bottom: 2em;
+}
