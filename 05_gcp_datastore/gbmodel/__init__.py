@@ -1,6 +1,6 @@
 #model_backend = 'pylist'
-model_backend = 'datastore'
-#model_backend = 'firestore'
+#model_backend = 'datastore'
+model_backend = 'firestore'
 
 if model_backend == 'pylist':
     from .model_pylist import ModelPylist as model

@@ -8,7 +8,7 @@ class ModelFirestore(Model):
 
     def select(self):
         revs = self.client.collection(u'Reviews').stream()
-        entities = [ [r.get('name'), r.get('email'), r.get('datetime').strftime("%c"), r.get('message')] for r in revs]
+        entities = [ [r.get('name'), r.get('email'), r.get('signed_on'), r.get('message'), r.id] for r in revs]
         return entities
 
     def insert(self,name,email,message):
@@ -16,7 +16,7 @@ class ModelFirestore(Model):
         review_ref.set({
             'name': name,
             'email' : email,
-            'datetime' : datetime.datetime(),
+            'signed_on' : datetime.now(),
             'message' : message
         })
         return True

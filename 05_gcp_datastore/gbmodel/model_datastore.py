@@ -36,7 +36,7 @@ def from_datastore(entity):
 
 class ModelDatastore(Model):
     def __init__(self):
-        self.client = datastore.Client('YOUR_PROJECT_ID')
+        self.client = datastore.Client()
 
     def select(self):
         query = self.client.query(kind = 'Review')
