@@ -12,9 +12,8 @@
     <section class="entry box">
       <pre>{{ message }}</pre>
       <header>
-        {{ name }} {% if entry.email %}&lt;{ entry.email }&gt;{ endif
-        }
-        <em>signed on {{ signedOn.strftime("%d.%m.%Y at %H:%M") }}</em>
+        {{ name }} {{#email}}&lt;{{ email }}&gt;{{/email}}
+        <em>signed on {{ signedOnFormatted }}</em>
       </header>
     </section>
     {{/entries}}

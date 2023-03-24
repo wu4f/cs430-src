@@ -1,30 +1,32 @@
 package ch.hegarc.guestbook;
 
+import ch.hegarc.guestbook.models.Entry;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import ch.hegarc.guestbook.models.Guestbook;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class MainController {
 
+    @Autowired
+    private GuestbookService guestbookService;
+
 	@GetMapping("/")
 	public String greeting(Model model) {
-		model.addAttribute("entries", new Guestbook().select());
+		model.addAttribute("entries", guestbookService.select());
 		return "index";
 	}
 
     @GetMapping("/sign")
     public String sign(Model model) {
+        model.addAttribute("entry", new Entry());
         return "sign";
     }
 
-    @RequestMapping(value = "/sign", method = RequestMethod.POST)
-    public String signProcess() {
-        // TODO
+    @PostMapping( "/sign")
+    public String signProcess(@ModelAttribute Entry entry) {
+        guestbookService.insert(entry);
         return "redirect:/";
     }
 

@@ -1,40 +1,85 @@
 package ch.hegarc.guestbook.models;
 
-import java.time.LocalDateTime;
+import com.google.cloud.Timestamp;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import java.util.Objects;
 
 public class Entry {
     private String name;
     private String email;
     private String message;
-    private LocalDateTime signedOn;
+    private Instant signedOn;
+
+    public Entry(){
+        this.signedOn = Instant.now();
+    }
 
     public Entry(String name, String email, String message) {
-        this.name = Objects.requireNonNull(name, "name must not be null");
-        this.email = Objects.requireNonNull(email, "email must not be null");
-        this.message = Objects.requireNonNull(message, "message must not be null");
-        this.signedOn = LocalDateTime.now();
+        this.name = name;
+        this.email = email;
+        this.message = message;
+        this.signedOn = Instant.now();
+    }
+
+    public Entry(String name, String email, String message, Instant signedOn) {
+        this.name = name;
+        this.email = email;
+        this.message = message;
+        this.signedOn = signedOn;
     }
 
     public String getName() {
-        return name;
+        return name == null ? "" : name;
     }
 
-    public String getEmail() {
-        return email;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getMessage() {
-        return message;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public LocalDateTime getSignedOn() {
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public void setSignedOn(Instant signedOn) {
+        this.signedOn = signedOn;
+    }
+    public Instant getSignedOn() {
         return signedOn;
     }
 
+
+    public void setSigned_on(Timestamp signedOn) {
+        this.signedOn = signedOn.toSqlTimestamp().toInstant();
+    }
+
+    public Timestamp getSigned_on() {
+        return Timestamp.of(java.sql.Timestamp.from(signedOn));
+    }
+
+    public String getEmail() {
+        return email == null ? "" : email;
+    }
+
+    public String getMessage() {
+        return message == null ? "" : message;
+    }
+
+
     public String getSignedOnFormatted() {
-        "%d.%m.%Y at %H:%M"
-        return "";
+        DateTimeFormatter date = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+                .withLocale( Locale.UK )
+                .withZone( ZoneId.of("Europe/Zurich") );
+        DateTimeFormatter time = DateTimeFormatter.ofPattern("HH:mm")
+                .withLocale( Locale.UK )
+                .withZone( ZoneId.of("Europe/Zurich") );
+        return String.format("%s at %s", date.format(signedOn), time.format(signedOn));
     }
 
     @Override

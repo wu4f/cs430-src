@@ -1,0 +1,12 @@
+runtime: java17
+env: standard
+
+# Spin up 2 instances
+manual_scaling:
+  instances: 2
+
+# Use an f1-micro machine type
+resources:
+  cpu: 1
+  memory_gb: 0.5
+  disk_size_gb: 10

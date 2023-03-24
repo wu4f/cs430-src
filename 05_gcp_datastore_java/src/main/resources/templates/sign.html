@@ -1,6 +1,6 @@
 {{#layout}}
     <h2>Sign Guestbook</h2>
-    <form action="/sign" method="post" class="box">
+    <form action="/sign" method="post" class="box" enctype="application/x-www-form-urlencoded">
         <label><span>Name:</span><input type="text" name="name" required /></label>
         <label><span>Email:</span><input type="email" name="email" /></label>
         <label><span>Message:</span><textarea name="message" required></textarea></label>
