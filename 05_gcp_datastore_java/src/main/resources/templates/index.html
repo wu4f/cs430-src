@@ -1,0 +1,21 @@
+{{#layout}}
+    <h2>Guestbook</h2>
+    <h3>
+      <a href="/sign"
+        ><img
+          src="/sign_here.png"
+          alt="sign here"
+      /></a>
+    </h3>
+    <h3>Entries</h3>
+    {{#entries}}
+    <section class="entry box">
+      <pre>{{ message }}</pre>
+      <header>
+        {{ name }} {% if entry.email %}&lt;{ entry.email }&gt;{ endif
+        }
+        <em>signed on {{ signedOn.strftime("%d.%m.%Y at %H:%M") }}</em>
+      </header>
+    </section>
+    {{/entries}}
+{{/layout}}

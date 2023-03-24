@@ -1,5 +1,5 @@
 # Use Python3 standard environment
-runtime: python310
+runtime: python311
 env: standard
 
 # Run gunicorn on app object in app.py
