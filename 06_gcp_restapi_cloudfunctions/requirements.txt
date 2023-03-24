@@ -1,4 +1,3 @@
-wheel
+functions-framework
 flask
-google-cloud-datastore
-rsa
+google-cloud-firestore

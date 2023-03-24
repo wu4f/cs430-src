@@ -3,7 +3,7 @@
     <h2>Guestbook</h2>
     <h3><a href="{{ url_for('sign') }}"><img src="{{ url_for('static', filename='sign_here.png') }}" alt="sign here"></a></h3>
     <h3>Entries</h3>
-    {% for entry in entries|reverse %}
+    {% for entry in entries %}
       <section class="entry box">
         <pre>{{ entry.message }}</pre>
         <header>

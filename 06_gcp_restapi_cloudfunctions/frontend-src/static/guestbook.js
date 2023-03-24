@@ -1,7 +1,7 @@
 "use strict";
 
 // fill in your API Gateway endpoint here
-const baseApiUrl = "<FMI>";
+const baseApiUrl = "<FMI>"; 
 
 /** Display the guestbook entries
  *
@@ -9,7 +9,7 @@ const baseApiUrl = "<FMI>";
  *  Clears the children of the div with the id "entries", then adds the new entries
  *  to it. We call this to initialize the page and update when entries are added.
  */
-const viewEntries = entries => {
+const renderEntries = entries => {
   const entriesNode = document.getElementById("entries");
 
   while (entriesNode.firstChild) {
@@ -17,23 +17,16 @@ const viewEntries = entries => {
   }
 
   entries.map(entry => {
-    const nameAndEmail = document.createTextNode(
-      entry.name + " <" + entry.email + ">"
-    );
-    const signedOn = document.createTextNode("signed on " + entry.date);
-    const message = document.createTextNode(entry.message);
-    const br = document.createElement("br");
-    const br2 = document.createElement("br");
-
-    const p = document.createElement("p");
-    p.classList.add("entry");
-    p.appendChild(nameAndEmail);
-    p.appendChild(br);
-    p.appendChild(signedOn);
-    p.appendChild(br2);
-    p.appendChild(message);
-
-    entriesNode.appendChild(p);
+    const entryNode = document.createElement("section");
+    entryNode.classList.add("entry", "box");
+    const email = entry.email ? `&lt;${entry.email}&gt;` : "";
+    entryNode.innerHTML = `<pre>${entry.message}</pre>
+    <header>
+      ${ entry.name } ${email}<br>
+      <em>signed on ${entry.signed_on}</em>
+    </header>`
+    // .strftime("%d.%m.%Y at %H:%M")
+    entriesNode.appendChild(entryNode);
   });
 };
 
@@ -44,27 +37,35 @@ const viewEntries = entries => {
  *  Display the entries on the page once they arrive.
  */
 const sign = async () => {
-  const name = document.getElementById("name").value;
-  const email = document.getElementById("email").value;
-  const message = document.getElementById("message").value;
+  const name = document.querySelector("input[name=name]");
+  const email = document.querySelector("input[name=email]");
+  const message = document.querySelector("textarea[name=message]");
+  const button  = document.querySelector("input[type=submit]");
+  button.style.display = "none";
 
-  const response = await fetch(baseApiUrl + "entry", {
+  await fetch(baseApiUrl + "entry", {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json"
     },
     method: "POST",
-    body: JSON.stringify({ name: name, email: email, message: message })
+    body: JSON.stringify({ name: name.value, email: email.value, message: message.value })
   });
-  const gbentries = await response.json();
-  viewEntries(gbentries);
+  button.style.display = "block";
+  name.value = "";
+  email.value = "";
+  message.value = "";
+  getEntries();
 };
+document.querySelector("input[type=submit]").addEventListener("click", sign);
 
 /** GET the guestbook entries from the REST API
  *
  *  Display them on the page once they arrive.
  */
 const getEntries = async () => {
+  const entriesNode = document.getElementById("entries");
+  entriesNode.innerHTML = "Loading entries...";
   const response = await fetch(baseApiUrl + "entries", {
     headers: {
       Accept: "application/json",
@@ -73,7 +74,7 @@ const getEntries = async () => {
     method: "GET"
   });
   const gbentries = await response.json();
-  viewEntries(gbentries);
+  renderEntries(gbentries);
 };
 
 // initialize the entries when a new guest arrives
