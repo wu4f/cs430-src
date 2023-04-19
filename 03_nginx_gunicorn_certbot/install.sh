@@ -29,6 +29,4 @@ systemctl start $SITE
 systemctl enable $SITE
 systemctl restart nginx
 
-certbot --nginx -d $1 -n -m <OdinID>@pdx.edu --agree-tos --redirect
-
 echo "Installation complete."
