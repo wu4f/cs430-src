@@ -26,7 +26,7 @@ class model(Model):
         try:
             cursor.execute("select count(rowid) from guestbook")
         except sqlite3.OperationalError:
-            cursor.execute("create table guestbook (name text, email text, signed_on date, message)")
+            cursor.execute("create table guestbook (name text, email text, signed_on date, message text)")
         cursor.close()
 
     def select(self):
