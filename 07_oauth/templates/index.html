@@ -6,7 +6,7 @@
     <h3>Entries</h3>
     {% for entry in entries %}
         <p class=entry>
-           <img src={{ entry.picture }} width=25px height=25px> {{ entry.name }} &lt;{{ entry.email }}&gt;
+           <img src={{ entry.picture }} width=25px height=25px referrerpolicy="no-referrer"> {{ entry.name }} &lt;{{ entry.email }}&gt;
 	    <br>on {{ entry.signed_on }}<br>
 	    {{ entry.message }}
         </p>
