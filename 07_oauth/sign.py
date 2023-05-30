@@ -16,7 +16,7 @@ class Sign(MethodView):
         # Redirect to the identity provider and ask the identity provider to return the client
         #   back to /callback route with the code
             google = OAuth2Session(client_id,
-                    redirect_uri = 'http://mashimaro.cs.pdx.edu:8000/callback',
+                    redirect_uri = 'http://localhost:8000/callback',
                     scope = 'https://www.googleapis.com/auth/userinfo.email ' +                   
                             'https://www.googleapis.com/auth/userinfo.profile'
             )
