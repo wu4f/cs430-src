@@ -2,7 +2,7 @@ from flask import redirect, request, url_for, render_template, session
 from requests_oauthlib import OAuth2Session
 from flask.views import MethodView
 import gbmodel
-from oauth_config import client_id, authorization_base_url
+from oauth_config import client_id, authorization_base_url, redirect_callback
 
 class Sign(MethodView):
     def get(self):
@@ -16,7 +16,7 @@ class Sign(MethodView):
         # Redirect to the identity provider and ask the identity provider to return the client
         #   back to /callback route with the code
             google = OAuth2Session(client_id,
-                    redirect_uri = 'http://localhost:8000/callback',
+                    redirect_uri = redirect_callback,
                     scope = 'https://www.googleapis.com/auth/userinfo.email ' +                   
                             'https://www.googleapis.com/auth/userinfo.profile'
             )
