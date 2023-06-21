@@ -33,25 +33,26 @@ def from_datastore(entity):
         return None
     if isinstance(entity, list):
         entity = entity.pop()
-    return [entity['name'],entity['email'],entity['date'],entity['message']]
+    return [entity['name'],entity['email'],entity['date'],entity['message'],entity['profile']]
 
 class model(Model):
     def __init__(self):
         self.client = datastore.Client(os.environ.get('GOOGLE_CLOUD_PROJECT'))
 
     def select(self):
-        query = self.client.query(kind = 'Review')
+        query = self.client.query(kind = 'OAuthReview')
         entities = list(map(from_datastore,query.fetch()))
         return entities
 
-    def insert(self,name,email,message):
-        key = self.client.key('Review')
+    def insert(self,name,email,message,profile):
+        key = self.client.key('OAuthReview')
         rev = datastore.Entity(key)
         rev.update( {
             'name': name,
             'email' : email,
             'date' : datetime.today(),
-            'message' : message
+            'message' : message,
+            'profile' : profile
             })
         self.client.put(rev)
         return True

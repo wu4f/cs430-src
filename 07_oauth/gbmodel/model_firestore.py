@@ -7,16 +7,17 @@ class model(Model):
         self.client = firestore.Client()
 
     def select(self):
-        revs = self.client.collection(u'Reviews').stream()
-        entities = [ [r.get('name'), r.get('email'), r.get('date').strftime("%c"), r.get('message')] for r in revs]
+        revs = self.client.collection(u'OAuthReviews').stream()
+        entities = [ [r.get('name'), r.get('email'), r.get('date').strftime("%c"), r.get('message'), r.get('profile')] for r in revs]
         return entities
 
-    def insert(self,name,email,message):
-        review_ref = self.client.collection(u'Reviews').document()
+    def insert(self,name,email,message,profile):
+        review_ref = self.client.collection(u'OAuthReviews').document()
         review_ref.set({
             'name': name,
             'email' : email,
             'date' : datetime.today(),
-            'message' : message
+            'message' : message,
+            'profile' : profile
         })
         return True
