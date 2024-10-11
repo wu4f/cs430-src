@@ -11,19 +11,16 @@ import re
 import os
 
 def chunking(documents):
-    """Takes in Documents and splits text into chunks"""
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=10000, chunk_overlap=1000)
     chunks = text_splitter.split_documents(documents)
     return chunks
 
 def clean_text(text):
-    """Replaces unicode characters and strips extra whitespace"""
     text = unidecode.unidecode(text)
     text = re.sub(r"\s+", " ", text).strip()
     return text
 
 def clean_documents(documents):
-    """Cleans page_content text of Documents list"""
     for doc in documents:
         doc.page_content = clean_text(doc.page_content)
     return documents
@@ -52,13 +49,14 @@ if __name__ == '__main__':
             embedding_function=GoogleGenerativeAIEmbeddings(model="models/embedding-001", task_type="retrieval_query"),
             persist_directory="./.chromadb"
     )
-    # Gets all the relevent URLs from the CS department landing page,
-    # scrapes them, chunks them, then adds them to vector database
+
     cs_website = "https://www.pdx.edu/computer-science"
     resp = requests.get(cs_website)
     soup = BeautifulSoup(resp.text,"html.parser")
     links = list({urljoin(cs_website,a['href']) for a in soup.find_all('a', href=True) if any(['computer-science' in a['href'], 'security' in a['href']])})
+
     documents = scrape_articles(links)
+
     chunks = chunking(documents)
     add_documents(vectorstore, chunks, 300)
 

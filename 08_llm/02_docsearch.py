@@ -24,7 +24,7 @@ for doc_metadata in retriever.vectorstore.get()['metadatas']:
 for doc in document_data_sources:
     print(f"  {doc}")
 
-print("This program queries documents in the RAG database that are similar to whatever is entered.")
+print("This program queries documents in the RAG database that are similar to whatever is entered.  A blank query exits the program.")
 while True:
     line = input(">> ")
     if line:
