@@ -1,10 +1,10 @@
-flask
-gunicorn
 bs4
 langchain
-langchainhub
 langchain-community
+langchain-chroma
 langchain_google_genai
 grpcio
 chromadb
 unidecode
+openapi-pydantic
+
