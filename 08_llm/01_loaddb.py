@@ -51,8 +51,10 @@ if __name__ == '__main__':
     )
 
     cs_website = "https://www.pdx.edu/computer-science"
-    s = requests.Session()
-    resp = s.get(cs_website)
+    headers = {
+        'User-Agent' : 'PDXAcademicClient/cs430'
+    }
+    resp = requests.get(cs_website, headers=headers)
     soup = BeautifulSoup(resp.text,"html.parser")
     links = list({urljoin(cs_website,a['href']) for a in soup.find_all('a', href=True) if any(['computer-science' in a['href'], 'security' in a['href']])})
 
