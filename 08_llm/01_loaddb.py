@@ -25,12 +25,12 @@ def clean_documents(documents):
         doc.page_content = clean_text(doc.page_content)
     return documents
 
-def scrape_articles(links):
+def scrape_articles(links, headers):
     """Scrapes list of links, extracts article text, returns Documents"""
     # Request header template
 
     # Scrape list of links
-    loader = AsyncHtmlLoader(links)
+    loader = AsyncHtmlLoader(links, header_template=headers)
     docs = loader.load()
     # Extract article tag
     transformer = BeautifulSoupTransformer()
@@ -58,7 +58,7 @@ if __name__ == '__main__':
     soup = BeautifulSoup(resp.text,"html.parser")
     links = list({urljoin(cs_website,a['href']) for a in soup.find_all('a', href=True) if any(['computer-science' in a['href'], 'security' in a['href']])})
 
-    documents = scrape_articles(links)
+    documents = scrape_articles(links, headers)
 
     chunks = chunking(documents)
     add_documents(vectorstore, chunks, 300)
