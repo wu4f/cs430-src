@@ -7,4 +7,4 @@ grpcio
 chromadb
 unidecode
 openapi-pydantic
-
+chainlit
