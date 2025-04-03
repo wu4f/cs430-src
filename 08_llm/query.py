@@ -43,8 +43,6 @@ rag_chain = (
 )
 
 if __name__ == "__main__":
-    main()
-
     print("Welcome to my RAG application.  Ask me a question and I will answer it from the documents in my database shown below.  A blank query exits the program.")
     # Iterate over documents and dump metadata
     document_data_sources = set()
