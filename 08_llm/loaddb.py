@@ -51,14 +51,14 @@ if __name__ == '__main__':
     )
 
     cs_website = "https://www.pdx.edu/computer-science"
-    headers = {
+    request_headers = {
         'User-Agent' : 'PDXAcademicClient/cs430'
     }
-    resp = requests.get(cs_website, headers=headers)
+    resp = requests.get(cs_website, headers=request_headers)
     soup = BeautifulSoup(resp.text,"html.parser")
     links = list({urljoin(cs_website,a['href']) for a in soup.find_all('a', href=True) if any(['computer-science' in a['href'], 'security' in a['href']])})
 
-    documents = scrape_articles(links, headers)
+    documents = scrape_articles(links, request_headers)
 
     chunks = chunking(documents)
     add_documents(vectorstore, chunks, 300)
