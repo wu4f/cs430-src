@@ -3,3 +3,5 @@
 env
 entries.db
 __pycache__
+.chainlit
+chainlit.md
