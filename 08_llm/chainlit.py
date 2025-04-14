@@ -7,7 +7,7 @@ async def on_chat_start():
     await cl.Message(content="", elements=[logo]).send()
 
     welcome_text = (
-        "👋 **Welcome to the Portland State CS Chatbot!**\n\n"
+        "**Welcome to the Portland State CS Chatbot!**\n\n"
         "Ask me anything about the CS program, courses, or resources at PSU.\n\n"
     )
     await cl.Message(content=welcome_text).send()
