@@ -17,16 +17,10 @@ llm = ChatOpenAI(model=os.getenv("OPENAI_MODEL"))
 #from langchain_anthropic import ChatAnthropic
 #llm = ChatAnthropic(model=os.getenv("ANTHROPIC_MODEL"))
 
-try: 
-    database = sys.argv[1]
-except:
-    # No database specified
-    database = "./db_data/metactf_users.db"
-
-prompt = f"You are a Sqlite3 database look up tool. Perform queries on the database at {database} given the user's input.  Utilize the user input verbatim when sending the query to the database and print the query that was sent to the database"
+prompt = f"You are a Sqlite3 database look up tool. Perform queries on a database hosted by the specified MCP server given the user's input.  Utilize the user input verbatim when sending the query to the database and print the query that was sent to the database"
 
 async def run_agent():
-    async with streamablehttp_client(f"{os.getenv('MCP_URL')}/mcp/") as (read, write, _):
+    async with streamablehttp_client(f"{os.getenv('MCP_URL')}/mcp") as (read, write, _):
         async with ClientSession(read, write) as session:
             await session.initialize()
 
