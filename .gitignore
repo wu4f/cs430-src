@@ -1,5 +1,4 @@
 *.pyc
-*.db
 env
 entries.db
 __pycache__
