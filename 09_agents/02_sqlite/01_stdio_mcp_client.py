@@ -1,5 +1,4 @@
 import os
-import sys
 import readline
 from langgraph.prebuilt import create_react_agent
 from langchain_mcp_adapters.tools import load_mcp_tools
@@ -13,18 +12,12 @@ llm = ChatOpenAI(model=os.getenv("OPENAI_MODEL"))
 #from langchain_anthropic import ChatAnthropic
 #llm = ChatAnthropic(model=os.getenv("ANTHROPIC_MODEL"))
 
-try: 
-    database = sys.argv[1]
-except:
-    # No database specified
-    database = "db_data/metactf_users.db"
-
 server = StdioServerParameters(
     command="python",
-    args=["vulnerable_sqlite_mcp_server_stdio.py","stdio"]
+    args=["vulnerable_sqlite_mcp_server.py","stdio"]
 )
 
-prompt = f"You are a Sqlite3 database look up tool. Perform queries on the database at {database} given the user's input.  Utilize the user input verbatim when sending the query to the database and print the query that was sent to the database"
+prompt = f"You are a Sqlite3 database look up tool. Perform queries on a database hosted by the specified MCP server given the user's input.  Utilize the user input verbatim when sending the query to the database and print the query that was sent to the database"
 
 async def run_agent():
     async with stdio_client(server) as (read, write):
@@ -34,7 +27,7 @@ async def run_agent():
             tools = await load_mcp_tools(session)
             agent = create_react_agent(model=llm, tools=tools, prompt=prompt)
 
-            print(f"Welcome to my database querying agent.  The agent will query the SQLite MCP server to answer queries on the database at {database}.")
+            print(f"Welcome to my database querying agent.  The agent will query the SQLite MCP server to answer queries.")
 
             while True:
                 line = input("llm>> ")
