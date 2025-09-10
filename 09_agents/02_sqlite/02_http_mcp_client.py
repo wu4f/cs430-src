@@ -1,5 +1,4 @@
 import os
-import sys
 # from langchain_google_genai import ChatGoogleGenerativeAI, HarmCategory, HarmBlockThreshold
 from langgraph.prebuilt import create_react_agent
 from langchain_mcp_adapters.tools import load_mcp_tools
@@ -28,7 +27,7 @@ async def run_agent():
 
             agent = create_react_agent(model=llm, tools=tools, prompt=prompt)
 
-            print(f"Welcome to my database querying agent.  The agent will query the SQLite MCP server to answer queries on the database at {database}.")
+            print(f"Welcome to my database querying agent.  The agent will query the SQLite MCP server to answer queries.")
 
             while True:
                 line = input("llm>> ")
