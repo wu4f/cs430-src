@@ -1,4 +1,4 @@
-from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import AsyncHtmlLoader
 from langchain_community.document_transformers import BeautifulSoupTransformer
 from langchain_chroma import Chroma
@@ -25,20 +25,13 @@ def clean_documents(documents):
         doc.page_content = clean_text(doc.page_content)
     return documents
 
-def scrape_articles(links, headers):
-    """Scrapes list of links, extracts article text, returns Documents"""
-    # Request header template
-
+def scrape_articles(links):
+    """Scrapes list of links, extracts and cleans text, returns Documents"""
     # Scrape list of links
-    loader = AsyncHtmlLoader(links, header_template=headers)
+    loader = AsyncHtmlLoader(links)
     docs = loader.load()
-    # Extract article tag
-    transformer = BeautifulSoupTransformer()
-    docs_tr = transformer.transform_documents(
-        documents=docs, tags_to_extract=["article"]
-    )
-    clean_documents(docs_tr)
-    return docs_tr
+    clean_documents(docs)
+    return docs
 
 def add_documents(vectorstore, chunks, n):
    for i in range(0, len(chunks), n):
@@ -50,15 +43,16 @@ if __name__ == '__main__':
             persist_directory="./.chromadb"
     )
 
-    cs_website = "https://www.pdx.edu/computer-science"
-    request_headers = {
+    cs_website = "https://codelabs.cs.pdx.edu/cs430"
+    s = requests.Session()
+    headers = {
         'User-Agent' : 'PDXAcademicClient/cs430'
     }
-    resp = requests.get(cs_website, headers=request_headers)
+    resp = requests.get(cs_website,headers=headers)
     soup = BeautifulSoup(resp.text,"html.parser")
-    links = list({urljoin(cs_website,a['href']) for a in soup.find_all('a', href=True) if any(['computer-science' in a['href'], 'security' in a['href']])})
+    links = list({urljoin(cs_website,a['href']) for a in soup.find_all('a', href=True)})
 
-    documents = scrape_articles(links, request_headers)
+    documents = scrape_articles(links)
 
     chunks = chunking(documents)
     add_documents(vectorstore, chunks, 300)
