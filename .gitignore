@@ -4,3 +4,8 @@ entries.db
 __pycache__
 .chainlit
 chainlit.md
+.python-version
+README.md
+main.py
+pyproject.toml
+uv.lock
