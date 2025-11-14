@@ -1,1 +1,6 @@
 .chromadb
+.python-version
+README.md
+main.py
+pyproject.toml
+uv.lock
