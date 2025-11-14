@@ -7,7 +7,7 @@ import readline
 import requests
 import yaml
 
-llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash",temperature=0)
+llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash",temperature=0)
 openapi_spec = requests.get("https://raw.githubusercontent.com/APIs-guru/unofficial_openapi_specs/master/xkcd.com/1.0.0/openapi.yaml").text
 raw_api_spec = yaml.load(openapi_spec, Loader=yaml.Loader)
 api_spec = reduce_openapi_spec(raw_api_spec)
