@@ -1,5 +1,7 @@
 bs4
 langchain
+langchain-core
+langchain-text-splitters
 langchain-community
 langchain-chroma
 langchain_google_genai

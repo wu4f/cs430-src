@@ -1,5 +1,5 @@
-from langchain.prompts import PromptTemplate
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_core.prompts import PromptTemplate
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_chroma import Chroma
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
@@ -27,7 +27,7 @@ prompt = PromptTemplate(
     template=prompt_template
 )
 
-llm = GoogleGenerativeAI(model="gemini-1.5-flash",temperature=0)
+llm = GoogleGenerativeAI(model="gemini-2.5-flash",temperature=0)
 
 def format_docs(docs):
     output = "\n\n".join(doc.page_content for doc in docs)
