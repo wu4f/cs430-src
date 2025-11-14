@@ -10,7 +10,7 @@ terraform {
 
 provider "google" {
  credentials = file("CDN-lab.json")
- project     = "<FMI>"
+ project = var.project_id
 }
 
 # --------------------
