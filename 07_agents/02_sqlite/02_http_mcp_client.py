@@ -5,14 +5,14 @@ from langchain_mcp_adapters.tools import load_mcp_tools
 from mcp import ClientSession
 from mcp.client.streamable_http import streamablehttp_client
 import asyncio
-# llm = ChatGoogleGenerativeAI(
-#              model=os.getenv("GOOGLE_MODEL"),
-#              safety_settings = {
-#                 HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT: HarmBlockThreshold.BLOCK_NONE,
-#              }
-#       )
-from langchain_openai import ChatOpenAI
-llm = ChatOpenAI(model=os.getenv("OPENAI_MODEL"))
+llm = ChatGoogleGenerativeAI(
+             model=os.getenv("GOOGLE_MODEL"),
+             safety_settings = {
+                HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT: HarmBlockThreshold.BLOCK_NONE,
+             }
+      )
+#from langchain_openai import ChatOpenAI
+#llm = ChatOpenAI(model=os.getenv("OPENAI_MODEL"))
 #from langchain_anthropic import ChatAnthropic
 #llm = ChatAnthropic(model=os.getenv("ANTHROPIC_MODEL"))
 
