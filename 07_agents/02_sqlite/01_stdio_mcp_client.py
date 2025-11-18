@@ -25,7 +25,7 @@ async def run_agent():
             await session.initialize()
 
             tools = await load_mcp_tools(session)
-            agent = create_agent(model=llm, tools=tools, prompt=prompt)
+            agent = create_agent(model=llm, tools=tools, system_prompt=prompt)
 
             print(f"Welcome to my database querying agent.  The agent will query the SQLite MCP server to answer queries.")
 
