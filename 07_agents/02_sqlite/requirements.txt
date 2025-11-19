@@ -4,3 +4,4 @@ langchain
 langgraph
 langchain-mcp-adapters
 langchain-openai
+langchain_google_genai
