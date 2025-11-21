@@ -23,7 +23,7 @@ Answer: """
 
 # create a prompt example from above template
 prompt = PromptTemplate(
-    input_variables=["question"],
+    input_variables=["question","context"],
     template=prompt_template
 )
 
