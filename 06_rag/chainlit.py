@@ -3,6 +3,7 @@ from query import rag_chain
 
 @cl.on_chat_start
 async def on_chat_start():
+    cl.user_session.set("history", [])
     logo = cl.Image(name="logo", display="inline", url="https://codelabs.cs.pdx.edu/images/pdx-cs-logo.png")
     await cl.Message(content="", elements=[logo]).send()
 
