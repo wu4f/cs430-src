@@ -1,5 +1,5 @@
-model_backend = 'datastore'
-#model_backend = 'firestore'
+#model_backend = 'datastore'
+model_backend = 'firestore'
 
 if model_backend == 'datastore':
     from .model_datastore import model
