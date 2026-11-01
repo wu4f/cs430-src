@@ -4,7 +4,7 @@ from google.cloud import firestore
 
 class model(Model):
     def __init__(self):
-        self.client = firestore.Client()
+        self.client = firestore.Client(database='default')
 
     def select(self):
         revs = self.client.collection(u'Reviews').stream()

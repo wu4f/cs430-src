@@ -1,5 +1,5 @@
 # Use Python3 standard environment
-runtime: python311
+runtime: python314
 env: standard
 
 # Run gunicorn on app object in app.py
@@ -8,9 +8,3 @@ entrypoint: gunicorn -b :$PORT app:app
 # Spin up 2 instances
 manual_scaling:
   instances: 2
-
-# Use an f1-micro machine type
-resources:
-  cpu: 1
-  memory_gb: 0.5
-  disk_size_gb: 10
