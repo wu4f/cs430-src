@@ -8,7 +8,7 @@ import readline
 
 vectorstore = Chroma(
      persist_directory="./.chromadb",
-     embedding_function=GoogleGenerativeAIEmbeddings(model="models/embedding-001", task_type="retrieval_query")
+     embedding_function=GoogleGenerativeAIEmbeddings(model="models/gemini-embedding-001", task_type="retrieval_query")
 )
 
 retriever = vectorstore.as_retriever()
