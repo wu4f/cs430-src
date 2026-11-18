@@ -1,6 +1,7 @@
 import os
 import readline
 from langchain.agents import create_agent
+from langchain_core.messages import AIMessage, ToolMessage
 from langchain_mcp_adapters.tools import load_mcp_tools
 from mcp import ClientSession
 from mcp.client.stdio import StdioServerParameters, stdio_client
@@ -25,7 +26,7 @@ async def run_agent():
             await session.initialize()
 
             tools = await load_mcp_tools(session)
-            agent = create_agent(model=llm, tools=tools, system_prompt=prompt, debug=True)
+            agent = create_agent(model=llm, tools=tools, system_prompt=prompt)
 
             print(f"Welcome to my database querying agent.  The agent will query the SQLite MCP server to answer queries.")
 
@@ -34,19 +35,14 @@ async def run_agent():
                 if line:
                     try:
                         result = await agent.ainvoke({"messages": [("user", line)]})
-                        # Extract the actual message content from the agent's response
-                        if "messages" in result:
-                            messages = result["messages"]
-                            if messages:
-                                last_message = messages[-1]
-                                if hasattr(last_message, 'content'):
-                                    print(f"{last_message.content}")
-                                else:
-                                    print(f"{last_message}")
-                            else:
-                                print("No response from agent")
-                        else:
-                            print(f"Agent response: {result}")
+                        for msg in result.get("messages", []):
+                            if isinstance(msg, AIMessage):
+                                for call in msg.tool_calls:
+                                    print(f"[request] {call['name']}({call['args']})")
+                            elif isinstance(msg, ToolMessage):
+                                print(f"[response] {msg.text}")
+                        messages = result.get("messages")
+                        print(messages[-1].text if messages else "No response from agent")
                     except Exception as e:
                         print(f"Error: {e}")
                 else:
