@@ -11,7 +11,7 @@ import re
 import os
 
 def chunking(documents):
-    text_splitter = RecursiveCharacterTextSplitter(chunk_size=10000, chunk_overlap=1000)
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=3000, chunk_overlap=1000)
     chunks = text_splitter.split_documents(documents)
     return chunks
 
