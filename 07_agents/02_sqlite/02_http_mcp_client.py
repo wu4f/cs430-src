@@ -1,28 +1,22 @@
 import os
-import readline  # enables line editing/history for input()
 import asyncio
 
+from langchain_google_genai import ChatGoogleGenerativeAI, HarmCategory, HarmBlockThreshold
 from langchain.agents import create_agent
 from langchain.mcp import MCPAdapter
-from langchain_core.messages import AIMessage, ToolMessage
-from langchain_google_genai import ChatGoogleGenerativeAI
-llm = ChatGoogleGenerativeAI(model=os.getenv("GOOGLE_MODEL"))
+from langchain_core.messages import HumanMessage, AIMessage, ToolMessage
+from langchain_core.output_parsers import StrOutputParser
+
+llm = ChatGoogleGenerativeAI(
+    model=os.getenv("GOOGLE_MODEL"),
+    safety_settings={
+        HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT: HarmBlockThreshold.BLOCK_NONE,
+    },
+)
 # from langchain_openai import ChatOpenAI
 # llm = ChatOpenAI(model=os.getenv("OPENAI_MODEL"))
 # from langchain_anthropic import ChatAnthropic
 # llm = ChatAnthropic(model=os.getenv("ANTHROPIC_MODEL"))
-import logging
-logging.getLogger("langchain_google_genai").setLevel(logging.ERROR)
-
-# Standard MCPConfig shape; the stdio transport is inferred from command/args.
-config = {
-    "mcpServers": {
-        "sqlite": {
-            "command": "python",
-            "args": ["vulnerable_sqlite_mcp_server.py", "stdio"],
-        }
-    }
-}
 
 prompt = (
     "You are a Sqlite3 database look up tool. Perform queries on a database hosted by "
@@ -32,9 +26,12 @@ prompt = (
 
 
 async def run_agent():
-    async with MCPAdapter(config) as adapter:
+    # The transport is inferred from the URL; no ClientSession / initialize() needed.
+    async with MCPAdapter(f"{os.getenv('MCP_URL')}/mcp") as adapter:
         tools = await adapter.list_tools()
+
         agent = create_agent(model=llm, tools=tools, system_prompt=prompt)
+        history = []
 
         print("Welcome to my database querying agent.  The agent will query the SQLite MCP server to answer queries.")
 
@@ -54,7 +51,6 @@ async def run_agent():
                 print(messages[-1].text if messages else "No response from agent")
             except Exception as e:
                 print(f"Error: {e}")
-
 
 if __name__ == "__main__":
     asyncio.run(run_agent())
