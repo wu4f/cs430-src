@@ -17,6 +17,8 @@ llm = ChatGoogleGenerativeAI(
 # llm = ChatOpenAI(model=os.getenv("OPENAI_MODEL"))
 # from langchain_anthropic import ChatAnthropic
 # llm = ChatAnthropic(model=os.getenv("ANTHROPIC_MODEL"))
+import logging
+logging.getLogger("langchain_google_genai").setLevel(logging.ERROR)
 
 prompt = (
     "You are a Sqlite3 database look up tool. Perform queries on a database hosted by "
