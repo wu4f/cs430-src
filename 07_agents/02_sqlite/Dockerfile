@@ -8,8 +8,7 @@ WORKDIR /app
 COPY requirements.txt .
 
 # Install into the system Python (no venv needed inside a container)
-RUN --mount=type=cache,target=/root/.cache/uv \
-    uv pip install --system -r requirements.txt
+RUN uv pip install --system -r requirements.txt
 
 RUN mkdir -p db_data
 
