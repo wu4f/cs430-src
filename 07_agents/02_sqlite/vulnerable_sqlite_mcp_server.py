@@ -10,9 +10,14 @@ def query(query: str) -> str:
     database = "./db_data/metactf_users.db"
     con = sqlite3.connect(database)
     cur = con.cursor()
-    results = cur.execute(query)
-    con.commit()
-    output_string = '\n'.join([', '.join(map(str, row)) for row in results])
+    try:
+        results = cur.execute(query)
+        con.commit()
+        output_string = '\n'.join([', '.join(map(str, row)) for row in results])
+    except sqlite3.Error as e:
+        output_string = f"SQL error: {e}"
+    finally:
+        con.close()
     return output_string
 
 if __name__ == "__main__":

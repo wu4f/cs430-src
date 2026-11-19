@@ -1,7 +1,7 @@
-fastmcp
+fastmcp==2.13.0
 requests
 langchain
 langgraph
-langchain-mcp-adapters
+langchain[mcp]
 langchain-openai
 langchain_google_genai
