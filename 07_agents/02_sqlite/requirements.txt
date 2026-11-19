@@ -1,4 +1,4 @@
-fastmcp==2.13.0
+fastmcp==3.4.10
 requests
 langchain
 langgraph
