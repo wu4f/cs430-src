@@ -5,6 +5,7 @@ langchain-text-splitters
 langchain-community
 langchain-chroma
 langchain_google_genai
+html2text
 grpcio
 chromadb
 unidecode

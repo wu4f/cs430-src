@@ -1,6 +1,6 @@
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import AsyncHtmlLoader
-from langchain_community.document_transformers import BeautifulSoupTransformer
+from langchain_community.document_transformers import BeautifulSoupTransformer, Html2TextTransformer
 from langchain_chroma import Chroma
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from bs4 import BeautifulSoup
@@ -11,7 +11,7 @@ import re
 import os
 
 def chunking(documents):
-    text_splitter = RecursiveCharacterTextSplitter(chunk_size=3000, chunk_overlap=1000)
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=3000, chunk_overlap=150)
     chunks = text_splitter.split_documents(documents)
     return chunks
 
@@ -26,12 +26,9 @@ def clean_documents(documents):
     return documents
 
 def scrape_articles(links):
-    """Scrapes list of links, extracts and cleans text, returns Documents"""
-    # Scrape list of links
-    loader = AsyncHtmlLoader(links)
-    docs = loader.load()
-    clean_documents(docs)
-    return docs
+    docs = AsyncHtmlLoader(links).load()
+    docs = Html2TextTransformer().transform_documents(docs)
+    return clean_documents(docs)
 
 def add_documents(vectorstore, chunks, n):
    for i in range(0, len(chunks), n):
@@ -39,7 +36,7 @@ def add_documents(vectorstore, chunks, n):
 
 if __name__ == '__main__':
     vectorstore = Chroma(
-            embedding_function=GoogleGenerativeAIEmbeddings(model="models/gemini-embedding-001", task_type="retrieval_query"),
+            embedding_function=GoogleGenerativeAIEmbeddings(model="models/gemini-embedding-001", transport="rest"),
             persist_directory="./.chromadb"
     )
 
