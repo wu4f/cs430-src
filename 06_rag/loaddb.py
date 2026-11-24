@@ -9,6 +9,7 @@ import unidecode
 import requests
 import re
 import os
+import time
 
 def chunking(documents):
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=3000, chunk_overlap=150)
@@ -30,9 +31,21 @@ def scrape_articles(links):
     docs = Html2TextTransformer().transform_documents(docs)
     return clean_documents(docs)
 
-def add_documents(vectorstore, chunks, n):
-   for i in range(0, len(chunks), n):
-       vectorstore.add_documents(chunks[i:i+n])
+def add_documents(vectorstore, chunks, n=50, pause=2):
+    for i in range(0, len(chunks), n):
+        batch = chunks[i:i+n]
+        for attempt in range(5):
+            try:
+                vectorstore.add_documents(batch)
+                break
+            except Exception as e:
+                wait = 2 ** attempt * 5
+                print(f"  batch {i//n} failed ({e.__class__.__name__}); retrying in {wait}s", flush=True)
+                time.sleep(wait)
+        else:
+            raise RuntimeError(f"batch {i//n} failed after retries")
+        print(f"  embedded {min(i+n, len(chunks))}/{len(chunks)}", flush=True)
+        time.sleep(pause)
 
 if __name__ == '__main__':
     vectorstore = Chroma(
