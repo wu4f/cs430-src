@@ -4,11 +4,12 @@ from langchain_chroma import Chroma
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
 from langchain_google_genai import GoogleGenerativeAI, GoogleGenerativeAIEmbeddings
+from langchain_community.embeddings import FastEmbedEmbeddings
 import readline
 
 vectorstore = Chroma(
-     persist_directory="./.chromadb",
-     embedding_function=GoogleGenerativeAIEmbeddings(model="models/gemini-embedding-001", task_type="retrieval_query")
+    embedding_function=FastEmbedEmbeddings(model_name="BAAI/bge-small-en-v1.5"),
+    persist_directory="./.chromadb"
 )
 
 retriever = vectorstore.as_retriever()

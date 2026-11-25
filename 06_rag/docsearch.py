@@ -2,8 +2,10 @@ from langchain_chroma import Chroma
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 import readline
 
+from langchain_community.embeddings import FastEmbedEmbeddings
+
 vectorstore = Chroma(
-    embedding_function=GoogleGenerativeAIEmbeddings(model="models/gemini-embedding-001", task_type="retrieval_query"),
+    embedding_function=FastEmbedEmbeddings(model_name="BAAI/bge-small-en-v1.5"),
     persist_directory="./.chromadb"
 )
 

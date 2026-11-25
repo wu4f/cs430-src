@@ -2,14 +2,13 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import AsyncHtmlLoader
 from langchain_community.document_transformers import BeautifulSoupTransformer, Html2TextTransformer
 from langchain_chroma import Chroma
-from langchain_google_genai import GoogleGenerativeAIEmbeddings
+from langchain_community.embeddings import FastEmbedEmbeddings
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin
 import unidecode
 import requests
 import re
 import os
-import time
 
 def chunking(documents):
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=3000, chunk_overlap=150)
@@ -31,26 +30,14 @@ def scrape_articles(links):
     docs = Html2TextTransformer().transform_documents(docs)
     return clean_documents(docs)
 
-def add_documents(vectorstore, chunks, n=50, pause=2):
-    for i in range(0, len(chunks), n):
-        batch = chunks[i:i+n]
-        for attempt in range(5):
-            try:
-                vectorstore.add_documents(batch)
-                break
-            except Exception as e:
-                wait = 2 ** attempt * 5
-                print(f"  batch {i//n} failed ({e.__class__.__name__}); retrying in {wait}s", flush=True)
-                time.sleep(wait)
-        else:
-            raise RuntimeError(f"batch {i//n} failed after retries")
-        print(f"  embedded {min(i+n, len(chunks))}/{len(chunks)}", flush=True)
-        time.sleep(pause)
+def add_documents(vectorstore, chunks, n):
+   for i in range(0, len(chunks), n):
+       vectorstore.add_documents(chunks[i:i+n])
 
 if __name__ == '__main__':
     vectorstore = Chroma(
-            embedding_function=GoogleGenerativeAIEmbeddings(model="models/gemini-embedding-001", transport="rest"),
-            persist_directory="./.chromadb"
+        embedding_function=FastEmbedEmbeddings(model_name="BAAI/bge-small-en-v1.5"),
+        persist_directory="./.chromadb"
     )
 
     cs_website = "https://codelabs.cs.pdx.edu/cs430"
